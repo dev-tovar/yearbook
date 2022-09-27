@@ -69,12 +69,23 @@
                     :closeOnSelect="true"
                     multiple
                     attach
-                    :menu-props="{ contentClass:'asdasdasd', offsetY: true, bottom: true }"
+                    :menu-props="{
+                      contentClass: 'asdasdasd',
+                      offsetY: true,
+                      bottom: true,
+                    }"
                   >
                     <template v-slot:selection="{ item, index }">
                       <span v-if="index < 2">{{ item }}</span>
-                      <span v-if="index == 0 && selectedFruits.length > 1" class="pr-2">,</span>
-                      <span v-if="index === 2" class="grey--text text-caption pl-2">
+                      <span
+                        v-if="index == 0 && selectedFruits.length > 1"
+                        class="pr-2"
+                        >,</span
+                      >
+                      <span
+                        v-if="index === 2"
+                        class="grey--text text-caption pl-2"
+                      >
                         (+{{ selectedFruits.length - 2 }} others)
                       </span>
                     </template>
@@ -82,9 +93,7 @@
                     <template v-slot:prepend-item>
                       <v-list-item ripple @mousedown.prevent @click="toggle">
                         <v-list-item-action>
-                          <v-icon
-                            color="primary"
-                          >
+                          <v-icon color="primary">
                             {{ icon }}
                           </v-icon>
                         </v-list-item-action>
@@ -94,7 +103,6 @@
                       </v-list-item>
                       <v-divider class="mt-2"></v-divider>
                     </template>
-                    
                   </v-select>
                 </v-col>
                 <v-col cols="12" md="12" sm="12" class="py-1">
@@ -175,7 +183,14 @@
               </v-row>
             </v-card>
           </v-col>
-          <v-col cols="12" md="4"> </v-col>
+          <v-col cols="12" md="4">
+             <v-card color="#F3F3F2" class="rounded-lg" height="100%">
+                <v-navigation-drawer color="#F3F3F2" right style="width:100%"  v-model="drawer_uploads">
+             
+            </v-navigation-drawer>
+              </v-card>
+           
+          </v-col>
         </v-row>
       </v-card-text>
       <v-divider class="mt-3"></v-divider>
@@ -223,6 +238,7 @@ export default {
   },
   data() {
     return {
+      drawer_uploads:true,
       checkbox: [],
       filter_user: {
         filter_fechas: [],

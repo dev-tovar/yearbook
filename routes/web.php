@@ -32,4 +32,13 @@ Route::get('/admin/news_feed', function () {
 Route::get('/admin/news_feed/create', function () {
     return view('admin.home');
 });
+Route::get('/admin/user_manager/{id?}', function () {
+    return view('admin.home');
+});
+Route::get('/admin/user_manager/{id?}/create', function () {
+    return view('admin.home');
+});
+Route::get('/admin/content_manager', function () {
+    return view('admin.home');
+});
 # DASHBOARD ADMIN

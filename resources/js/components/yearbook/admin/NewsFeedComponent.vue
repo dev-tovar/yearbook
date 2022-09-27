@@ -29,7 +29,7 @@
           <v-card-text>
             <v-row wrap>
               <v-col cols="12" md="6" sm="12">
-                <span class="font-weight-bold">Search:</span>
+                <span class="font-weight-bold">Search</span>
                 <v-text-field
                   placeholder="Search"
                   height="52"
@@ -41,7 +41,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6" sm="12">
-                <span class="font-weight-bold">Filter by date:</span>
+                <span class="font-weight-bold">Filter by date</span>
                 <date-picker-range
                   placeholdercustom="Dates"
                   @changeDates="changeDatesReserva"
