@@ -19,22 +19,24 @@
             font-family: 'Public Sans', sans-serif;
         }
         ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #c7c7c7; 
+  /* border-bottom-right-radius: 10px; */
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #490102cf; 
+  background: #000; 
+  border-radius: 0px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #490102; 
+  background: #000; 
 }
 
 
@@ -61,6 +63,26 @@
         background: linear-gradient(99.98deg, #f8f8f8 56.1%, #eaeaea 113.23%);
 
 }
+
+.admin-menu .v-list-item--active::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 3px;
+    background: #000;
+    right: 0;
+}
+
+.hidde-scroll-bar .v-navigation-drawer__content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hidde-scroll-bar .v-navigation-drawer__content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
     </style>
 
     <!-- Scripts -->
