@@ -128,7 +128,7 @@ const app = new Vue({
                 { value: "alumni-events", submenu: false, url: '/admin/6', title: 'Alumni Events', icon: 'mdi-image-outline' },
                 { value: "colors", submenu: false, url: '/admin/7', title: 'Colors', icon: 'mdi-image-outline' },
                 { value: "bank-account", submenu: false, url: '/admin/8', title: 'Bank Account', icon: 'mdi-image-outline' },
-                { value: "contact-us", submenu: false, url: '/admin/9', title: 'Contact Us', icon: 'mdi-image-outline' },
+                { value: "contact-us", submenu: false, url: '/admin/9', title: 'Contact us', icon: 'mdi-image-outline' },
             ],
             sub_menu: [
                 {

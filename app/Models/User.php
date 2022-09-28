@@ -41,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function yearbook()
+    {
+        return $this->belongsToMany(YearBook::class, 'users_year_books',
+            'user_id', 'yearbook_id');
+    }
+
 }

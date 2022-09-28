@@ -3,7 +3,8 @@
 @section('content')
 
 <v-fade-transition fluid fill-height mode="out-in">
-    <router-view></router-view>
+    <router-view ></router-view>
+   
 </v-fade-transition>
 {{-- <div class="container">
     <div class="row justify-content-center">

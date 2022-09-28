@@ -7,7 +7,10 @@
           src="/img/logos/top-link.png"
           class="mr-5"
         ></v-img>
-        <v-img max-width="256.54" src="https://admin-pocketyearbook.com/images/logo.png"></v-img>
+        <v-img
+          max-width="256.54"
+          src="https://admin-pocketyearbook.com/images/logo.png"
+        ></v-img>
       </v-card-actions>
       <v-card-text>
         <v-card class="mt-4 rounded-xl" elevation="3">
@@ -17,12 +20,14 @@
             <p class="my-1">Member Login</p>
           </v-card-title>
           <v-divider></v-divider>
-          <v-form>
+          <v-form method="POST" action="login">
+            <input type="hidden" name="_token" :value="$root.csrf_token" />
             <v-card-text class="px-9 py-9">
               <v-row wrap>
                 <v-col sm="12" md="12" cols="12" class="px-7 pb-0">
                   <span class="font-weight-bold">Email:</span>
                   <v-text-field
+                    name="email"
                     height="52"
                     class="rounded-lg login-input"
                     outlined
@@ -32,6 +37,7 @@
                 <v-col sm="12" md="12" cols="12" class="px-7 py-0">
                   <span class="font-weight-bold">Password:</span>
                   <v-text-field
+                    name="password"
                     height="52"
                     class="rounded-lg"
                     :class="
@@ -56,6 +62,7 @@
                 <v-col class="text-center">
                   <div class="my-2">
                     <v-btn
+                      type="submit"
                       x-large
                       outlined
                       rounded
