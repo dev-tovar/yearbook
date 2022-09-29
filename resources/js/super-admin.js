@@ -16,7 +16,10 @@ import 'vuetify/dist/vuetify.min.css'
 
 import VueNumber from 'vue-number-animation'
 
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
 
+Vue.component('apexchart', VueApexCharts)
 
 
 

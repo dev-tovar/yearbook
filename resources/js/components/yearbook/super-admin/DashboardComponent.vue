@@ -52,7 +52,6 @@
                   <v-card-title
                     class="text-h3 font-weight-bold text-center d-block"
                   >
-                    
                     <number
                       ref="number1"
                       :from="0"
@@ -80,8 +79,7 @@
                   <v-card-title
                     class="text-h3 font-weight-bold text-center d-block"
                   >
-                    
-                     <number
+                    <number
                       ref="number1"
                       :from="0"
                       :to="1426"
@@ -108,7 +106,7 @@
                   <v-card-title
                     class="text-h3 font-weight-bold text-center d-block"
                   >
-                     <number
+                    <number
                       ref="number1"
                       :from="0"
                       :to="329"
@@ -135,7 +133,7 @@
                   <v-card-title
                     class="text-h3 font-weight-bold text-center d-block"
                   >
-                     <number
+                    <number
                       ref="number1"
                       :from="0"
                       :to="0"
@@ -154,7 +152,16 @@
           </v-card-text>
         </v-card>
       </v-card-text>
-      <v-card-text class="px-0"> </v-card-text>
+      <v-card-text>
+        <div v-if="show_graph" id="chart" style="width: 100%">
+          <apexchart
+            type="line"
+            height="450"
+            :options="chartOptions"
+            :series="series"
+          ></apexchart>
+        </div>
+      </v-card-text>
     </v-card>
   </v-container>
 </template>
@@ -165,14 +172,80 @@ export default {
   data() {
     return {
       model: null,
+      show_graph: false,
+      series: [
+        {
+          name: "",
+          data: [49, 102, 83, 120, 81, 157, 205, 248, 207, 153, 179, 201],
+        }
+      ],
+      chartOptions: {
+        chart: {
+          height: 350,
+          type: "line",
+          dropShadow: {
+            enabled: true,
+            color: "#000",
+            top: 18,
+            left: 7,
+            blur: 10,
+            opacity: 0.2,
+          },
+          toolbar: {
+            show: false,
+          },
+        },
+        colors: ["#545454"],
+        dataLabels: {
+          enabled: true,
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        title: {
+          text: "",
+          align: "left",
+        },
+        grid: {
+          borderColor: "#e7e7e7",
+          row: {
+            colors: ["transparent", "transparent"], // takes an array which will be repeated on columns
+            opacity: 0.5,
+          },
+        },
+        markers: {
+          size: 1,
+        },
+        xaxis: {
+          categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+          title: {
+            text: "",
+          },
+        },
+        yaxis: {
+          title: {
+            text: "",
+          },
+        },
+        legend: {
+          position: "top",
+          horizontalAlign: "right",
+          floating: true,
+          offsetY: -25,
+          offsetX: -5,
+        },
+      },
     };
   },
   mounted() {
     console.log("Component mounted.");
+    setTimeout(() => {
+        this.show_graph = true;
+    }, 500);
   },
   methods: {
     theFormat(number) {
-      return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+      return number.toFixed(0);
     },
   },
 };
