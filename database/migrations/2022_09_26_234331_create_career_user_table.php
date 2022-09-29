@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateCareerUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('career_user', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('career_id')->index('career_user_career_id_foreign');
+            $table->unsignedInteger('user_id')->index('career_user_user_id_foreign');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('career_user');
     }
-};
+}
