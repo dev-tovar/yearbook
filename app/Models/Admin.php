@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use App\Models\Traits\RoleUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class Admin extends Authenticatable
 {
@@ -56,7 +60,7 @@ class Admin extends Authenticatable
 
     public function getFakeAdmin($school)
     {
-        $admin             = Admin::whereHas('user',
+        $admin = Admin::whereHas('user',
             function ($q) use ($school) {
                 $q->whereHas('users_yearbooks', function ($qq) use ($school) {
                     $qq->whereHas('yearbook', function ($qqq) use ($school) {
