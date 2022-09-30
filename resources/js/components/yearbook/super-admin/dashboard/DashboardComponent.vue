@@ -12,6 +12,7 @@
       <v-card-text>
         <v-card elevation="0" class="mx-auto" width="1400">
           <v-card-text>
+            <!-- {{info_dashboard_counts}} -->
             <v-slide-group v-model="model" class="pa-0">
               <v-slide-item>
                 <v-card
@@ -28,7 +29,7 @@
                     <number
                       ref="number1"
                       :from="0"
-                      :to="9"
+                      :to="info_dashboard_counts.totalSchools"
                       :format="theFormat"
                       :duration="1"
                       :delay="1"
@@ -55,7 +56,7 @@
                     <number
                       ref="number1"
                       :from="0"
-                      :to="114636"
+                      :to="info_dashboard_counts.allUsers"
                       :format="theFormat"
                       :duration="1"
                       :delay="1"
@@ -82,7 +83,7 @@
                     <number
                       ref="number1"
                       :from="0"
-                      :to="1426"
+                      :to="info_dashboard_counts.totalStudents"
                       :format="theFormat"
                       :duration="1"
                       :delay="1"
@@ -109,7 +110,7 @@
                     <number
                       ref="number1"
                       :from="0"
-                      :to="329"
+                      :to="info_dashboard_counts.totalParents"
                       :format="theFormat"
                       :duration="1"
                       :delay="1"
@@ -136,7 +137,7 @@
                     <number
                       ref="number1"
                       :from="0"
-                      :to="0"
+                      :to="info_dashboard_counts.totalPaidUsers"
                       :format="theFormat"
                       :duration="1"
                       :delay="1"
@@ -235,6 +236,8 @@ export default {
           offsetX: -5,
         },
       },
+
+      info_dashboard_counts: null,
     };
   },
   mounted() {
@@ -242,8 +245,18 @@ export default {
     setTimeout(() => {
         this.show_graph = true;
     }, 500);
+    this.getInfoDashboardCounts();
   },
   methods: {
+    getInfoDashboardCounts(){
+      axios.get('/info_dashboard')
+      .then(res => {
+        this.info_dashboard_counts = res.data;
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
     theFormat(number) {
       return number.toFixed(0);
     },

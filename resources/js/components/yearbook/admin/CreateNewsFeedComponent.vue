@@ -11,7 +11,7 @@
           >
             <router-link
               style="text-decoration: none"
-              to="/admin/news_feed"
+              to="/pyb/admin/news_feed"
               class="font-weight-bold"
               ><v-icon color="primary" size="30"
                 >mdi-arrow-left</v-icon

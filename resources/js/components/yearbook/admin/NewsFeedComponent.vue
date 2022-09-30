@@ -6,7 +6,7 @@
           <v-col cols="12" md="12" class="pa-0 ma-0 text-center">
             <span> News Feed </span>
             <v-btn
-              to="/admin/news_feed/create"
+              to="/pyb/admin/news_feed/create"
               right
               x-large
               outlined

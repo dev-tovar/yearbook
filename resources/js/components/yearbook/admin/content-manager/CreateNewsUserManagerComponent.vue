@@ -5,7 +5,7 @@
         <v-row dense>
           <v-col cols="12" md="12" class="pa-0 ma-0 text-center">
             <router-link
-              to="/admin/user_manager/1"
+              to="/pyb/admin/user_manager/1"
               class="font-weight-bold"
               style="position: absolute; left: 7px;text-decoration: none"
               ><v-icon color="primary" size="30"

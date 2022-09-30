@@ -7,7 +7,7 @@
             <span> User manager </span>
             <div class="admin-btn-new-feed">
               <v-btn
-              to="/admin/user_manager/1/create"
+              to="/pyb/admin/user_manager/1/create"
               right
               x-large
               outlined

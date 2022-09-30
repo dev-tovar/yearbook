@@ -29,10 +29,18 @@ Vue.use(VueNumber)
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-Vue.component("yearbook-super-admin-dashboard-component", require("./components/yearbook/super-admin/DashboardComponent.vue").default);
+Vue.component("yearbook-super-admin-dashboard-component", require("./components/yearbook/super-admin/dashboard/DashboardComponent.vue").default);
+Vue.component("yearbook-super-admin-school-manager-component", require("./components/yearbook/super-admin/school-manager/SchoolManagerComponent.vue").default);
+Vue.component("yearbook-super-admin-new-school-component", require("./components/yearbook/super-admin/school-manager/CreateNewsSchoolComponent.vue").default);
 
 let yearbook_super_admin_dashboard_component = {
     template: `<yearbook-super-admin-dashboard-component></yearbook-super-admin-dashboard-component>`
+}
+let yearbook_super_admin_school_manager_component = {
+    template: `<yearbook-super-admin-school-manager-component></yearbook-super-admin-school-manager-component>`
+}
+let yearbook_super_admin_new_school_component = {
+    template: `<yearbook-super-admin-new-school-component></yearbook-super-admin-new-school-component>`
 }
 
 
@@ -40,10 +48,21 @@ let yearbook_super_admin_dashboard_component = {
 const router = new VueRouter({
     routes: [
         {
-            path: '/super-admin/dashboard',
+            path: '/pyb/super-admin/dashboard',
             name: 'yearbook_super_admin_dashboard_component',
             component: yearbook_super_admin_dashboard_component
-        }
+        },
+        {
+            path: '/pyb/super-admin/school_manager',
+            name: 'yearbook_super_admin_school_manager_component',
+            component: yearbook_super_admin_school_manager_component
+        },
+        {
+            path: '/pyb/super-admin/school_manager/create',
+            name: 'yearbook_super_admin_new_school_component',
+            component: yearbook_super_admin_new_school_component
+        },
+        
     ],
     mode: 'history'
 })
@@ -77,49 +96,49 @@ const app = new Vue({
                 {
                     value: "dashboard",
                     submenu: false,
-                    url: '/super-admin/dashboard', 
+                    url: '/pyb/super-admin/dashboard', 
                     title: 'Dashboard',
                     icon: 'mdi-image-outline'
                 },
                 {
                     value: "school-manager",
                     submenu: false,
-                    url: '/super-admin/school_manager',
+                    url: '/pyb/super-admin/school_manager',
                     title: 'School manager',
                     icon: 'mdi-image-outline'
                 },
                 {
                     value: "contact-us",
                     submenu: false,
-                    url: '/super-admin/contact_us',
+                    url: '/pyb/super-admin/contact_us',
                     title: 'Contact us', 
                     icon: 'mdi-image-outline'
                 },
                 {
                     value: "admins",
                     submenu: false,
-                    url: '/super-admin/admins',
+                    url: '/pyb/super-admin/admins',
                     title: 'Admins', 
                     icon: 'mdi-image-outline'
                 },
                 {
                     value: "college-attending",
                     submenu: false,
-                    url: '/super-admin/college_attending',
+                    url: '/pyb/super-admin/college_attending',
                     title: 'College attending', 
                     icon: 'mdi-image-outline'
                 },
                 {
                     value: "future-aspirations",
                     submenu: false,
-                    url: '/super-admin/future_aspirations',
+                    url: '/pyb/super-admin/future_aspirations',
                     title: 'Future aspirations', 
                     icon: 'mdi-image-outline'
                 },
                 {
                     value: "sports_clubs",
                     submenu: false,
-                    url: '/super-admin/sports_clubs',
+                    url: '/pyb/super-admin/sports_clubs',
                     title: 'Sports / Clubs', 
                     icon: 'mdi-image-outline'
                 },
@@ -129,31 +148,31 @@ const app = new Vue({
                     id: 1,
                     text: "2018  -  2019",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/1"
+                    url: "/pyb/admin/user_manager/1"
                 },
                 {
                     id: 2,
                     text: "2019  -  2020",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/2"
+                    url: "/pyb/admin/user_manager/2"
                 },
                 {
                     id: 3,
                     text: "2020  -  2021",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/3"
+                    url: "/pyb/admin/user_manager/3"
                 },
                 {
                     id: 4,
                     text: "2021  -  2022",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/4"
+                    url: "/pyb/admin/user_manager/4"
                 },
                 {
                     id: 5,
                     text: "2022  -  2023",
                     img: null,
-                    url: "/admin/user_manager/5"
+                    url: "/pyb/admin/user_manager/5"
                 },
 
             ],

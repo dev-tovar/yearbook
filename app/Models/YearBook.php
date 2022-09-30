@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Arr;
 
 /**
  * @method Builder where(string $string, int $id)
@@ -41,7 +42,7 @@ class YearBook extends Model
         $yearbook = self::create($data);
         try {
             $config      = app('config')->get('mediaManager');
-            $fileSystem  = array_get($config, 'storage_disk');
+            $fileSystem  = Arr::get($config, 'storage_disk');
             $storageDisk = app('filesystem')->disk($fileSystem);
             $storageDisk->makeDirectory('schools/'.
                 $data['school_id'].'/'.$data['year_from'].'-'.$data['year_to'].

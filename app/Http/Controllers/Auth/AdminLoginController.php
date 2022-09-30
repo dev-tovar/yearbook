@@ -32,13 +32,13 @@ class AdminLoginController extends Controller
             $user = Auth::guard('admin')->user();
             if ($user->hasRole('super-admin')) {
                 // return redirect()->action('Admin\DashboardController@index');
-                return  redirect('/super-admin');
+                return  redirect('/pyb/super-admin');
             } elseif ($user->hasRole('admin')) {
                 $schoolId = $user->user->yearbook()->first()->school_id;
                 // return redirect()->action('Admin\YearBookController@index', ['school_id' => $schoolId]);
-                return  redirect('/admin');
+                return  redirect('/pyb/admin');
             } elseif ($user->hasRole('content_manager')) {
-                return  redirect('/content-manager');
+                return  redirect('/pyb/content-manager');
                 // return redirect()->action('Admin\ContentManagerController@index',
                 //     [
                 //         'name' => 'cover',
@@ -49,7 +49,7 @@ class AdminLoginController extends Controller
             } elseif ($user->hasRole('news_feed')) {
                 // return redirect()->action('Admin\NewsFeedController@index',
                 //     ['id' => $user->getSchool()->id]);
-                return  redirect('/news-feed');
+                return  redirect('/pyb/news-feed');
             } else {
                 Auth::guard('admin')->logout();
                 \request()->session()->flush();
