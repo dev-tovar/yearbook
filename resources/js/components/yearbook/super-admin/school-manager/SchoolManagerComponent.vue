@@ -7,36 +7,27 @@
             <span> School Manager </span>
             <div class="admin-btn-new-feed">
               <v-btn
-              to="/pyb/super-admin/school_manager/create"
-              right
-              x-large
-              outlined
-              rounded
-              width="182"
-              color="primary"
-              class="
-                text-capitalize
-                font-weight-bold
-              "
-              >Add New School</v-btn
-            >
+                to="/pyb/super-admin/school_manager/create"
+                right
+                x-large
+                outlined
+                rounded
+                width="182"
+                color="primary"
+                class="text-capitalize font-weight-bold"
+                >Add New School</v-btn
+              >
               <v-btn
-              right
-              x-large
-              outlined
-              rounded
-              width="202"
-              color="primary"
-              class="
-                text-capitalize
-                font-weight-bold
-                admin-btn-bg
-              "
-              >Import Schools</v-btn
-            >
+                right
+                x-large
+                outlined
+                rounded
+                width="202"
+                color="primary"
+                class="text-capitalize font-weight-bold admin-btn-bg"
+                >Import Schools</v-btn
+              >
             </div>
-
-            
           </v-col>
         </v-row>
       </v-card-title>
@@ -45,7 +36,7 @@
         <v-card elevation="0" class="mx-auto">
           <v-card-text>
             <v-row wrap>
-              <v-col cols="12" md="3" sm="12">
+              <v-col>
                 <span class="font-weight-bold">Search</span>
                 <v-text-field
                   placeholder="Search"
@@ -57,9 +48,9 @@
                   hide-details
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" md="3" sm="12">
+              <v-col>
                 <span class="font-weight-bold">Filter by date</span>
-                   <v-select
+                <v-select
                   height="52"
                   class="rounded-lg admin-input"
                   outlined
@@ -67,9 +58,9 @@
                   hide-details
                 ></v-select>
               </v-col>
-              <v-col cols="12" md="3" sm="12">
+              <v-col>
                 <span class="font-weight-bold">Status</span>
-                   <v-select
+                <v-select
                   height="52"
                   class="rounded-lg admin-input"
                   outlined
@@ -77,9 +68,9 @@
                   hide-details
                 ></v-select>
               </v-col>
-              <v-col cols="12" md="3" sm="12">
+              <v-col>
                 <span class="font-weight-bold">Number of students</span>
-                   <v-select
+                <v-select
                   height="52"
                   class="rounded-lg admin-input"
                   outlined
@@ -87,9 +78,9 @@
                   hide-details
                 ></v-select>
               </v-col>
-              <v-col cols="12" md="3" sm="12">
+              <v-col>
                 <span class="font-weight-bold">Grade level</span>
-                   <v-select
+                <v-select
                   height="52"
                   class="rounded-lg admin-input"
                   outlined
@@ -97,7 +88,6 @@
                   hide-details
                 ></v-select>
               </v-col>
-              
             </v-row>
           </v-card-text>
         </v-card>
@@ -115,22 +105,42 @@
             </v-avatar>
           </template>
 
-          <template v-slot:item.actions="{ item }">
-          
-            <v-icon size="18" color="primary" small class="mr-3">
-              mdi-file-pdf-box
-            </v-icon>
-            <v-icon size="18" color="primary" small class="mr-3">
-              mdi-pencil-outline
-            </v-icon>
+          <template v-slot:item.contract="{ item }">
             <v-icon
-              @click="dialog_delete_feed = true"
+              v-if="!item.contract"
               size="18"
               color="primary"
               small
+              class="mr-3"
             >
-              mdi-trash-can-outline
+              mdi-file-pdf-box
             </v-icon>
+            <a
+              v-else
+              :href="'/' + item.contract.path"
+              target="_blank"
+              :rel="item.contract.original_name"
+              >{{ item.contract.original_name }}</a
+            >
+          </template>
+
+          <template v-slot:item.actions="{ item }">
+            <div class="d-flex">
+              <router-link style="text-decoration: none" :to="'/pyb/super-admin/school_manager/'+item.id+'/edit'">
+                <v-icon size="18" color="primary" small class="mr-3">
+                  mdi-pencil-outline
+                </v-icon></router-link
+              >
+
+              <v-icon
+                @click="dialog_delete_feed = true"
+                size="18"
+                color="primary"
+                small
+              >
+                mdi-trash-can-outline
+              </v-icon>
+            </div>
           </template>
           <!-- <template v-slot:no-data>
             <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -149,10 +159,14 @@
       <v-card class="rounded-xl" elevation="3">
         <v-card-title class="d-block text-center py-9 text-h5 font-weight-bold">
           Delete this post?
-          <v-btn @click="dialog_delete_feed = !dialog_delete_feed" class="admin-btn-close-dialog" small icon fab>
-            <v-icon color="primary" size="30">
-              mdi-close
-            </v-icon>
+          <v-btn
+            @click="dialog_delete_feed = !dialog_delete_feed"
+            class="admin-btn-close-dialog"
+            small
+            icon
+            fab
+          >
+            <v-icon color="primary" size="30"> mdi-close </v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text class="text-center font-weight-bold grey lighten-4 pt-5">
@@ -206,19 +220,29 @@ export default {
         {
           text: "Date",
           align: "start",
+          sortable: false,
           value: "date_create",
         },
-        { text: "School", value: "name" },
-        { text: "Address", value: "address" },
-        { text: "Grade Level", value: "grade" },
-        { text: "# of students", value: "students_number" },
-        { text: "# of uploaded students", value: "total_users_count" },
-        { text: "Yearbook Advisor", value: "advisor" },
-        { text: "Contract Status", value: "contract_status" },
-        { text: "Actions", align: "center", sortable: false, value: "actions" },
+        { text: "School", sortable: false, value: "name" },
+        { text: "Address", sortable: false, value: "address" },
+        { text: "Grade Level", sortable: false, value: "grade" },
+        { text: "# of students", sortable: false, value: "students_number" },
+        {
+          text: "# of uploaded students",
+          sortable: false,
+          value: "total_users_count",
+        },
+        { text: "Yearbook Advisor", sortable: false, value: "advisor" },
+        { text: "Contract Status", sortable: false, value: "contract_status" },
+        {
+          text: "Contract PDF	",
+          align: "center",
+          sortable: false,
+          value: "contract",
+        },
+        { text: "", align: "center", sortable: false, value: "actions" },
       ],
-      items_school: [
-      ],
+      items_school: [],
     };
   },
   mounted() {
@@ -226,16 +250,16 @@ export default {
     this.getSchoolManagerInfo();
   },
   methods: {
-    getSchoolManagerInfo(){
-      axios.get('/info_school_manager')
-      .then(res => {
-          this.items_school = res.data.schools.data
-      })
-      .catch(err => {
-        console.error(err); 
-      })
-    }
-   
+    getSchoolManagerInfo() {
+      axios
+        .get("/info_school_manager")
+        .then((res) => {
+          this.items_school = res.data.schools.data;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
 };
 </script>

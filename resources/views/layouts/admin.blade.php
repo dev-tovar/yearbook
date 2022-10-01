@@ -82,7 +82,15 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+@font-face{
+  font-family: text-security-disc;
+  src: url("/fonts/text-security-disc.woff");
+}
 
+.login-input.password input{
+  font-family: text-security-disc;
+  -webkit-text-security: disc;
+}
     </style>
 
     <!-- Scripts -->

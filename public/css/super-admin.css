@@ -1,3 +1,5 @@
 @import url(https://fonts.bunny.net/css?family=Nunito);
 @import url(https://fonts.googleapis.com/css2?family=Public+Sans:wght@100&display=swap);
-
+.v-date-picker-table {
+  height: auto !important;
+}

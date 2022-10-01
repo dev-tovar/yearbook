@@ -12,9 +12,11 @@
                 >mdi-arrow-left</v-icon
               ></router-link
             >
-            <span> Create New School </span>
+            <span v-if="type_form == 'create'"> Create New School </span>
+            <span v-else-if="type_form == 'edit'"> Edit School </span>
             <div class="admin-btn-new-feed">
               <v-btn
+                v-if="type_form == 'create'"
                 right
                 x-large
                 outlined
@@ -22,7 +24,20 @@
                 width="202"
                 color="primary"
                 class="text-capitalize font-weight-bold admin-btn-bg"
+                @click="saveNewSchool"
                 >Create</v-btn
+              >
+              <v-btn
+                v-else-if="type_form == 'edit'"
+                right
+                x-large
+                outlined
+                rounded
+                width="202"
+                color="primary"
+                class="text-capitalize font-weight-bold admin-btn-bg"
+                @click="updateSchool"
+                >Save</v-btn
               >
             </div>
           </v-col>
@@ -32,8 +47,7 @@
       <v-card-text>
         <v-form ref="formschool">
           <v-row dense>
-            <v-col cols="12" md="4"> </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" :offset="type_form == 'create' ? 4 : 2">
               <v-card elevation="0" class="mx-auto mt-5" max-width="370">
                 <v-row wrap>
                   <v-col cols="12" md="12" sm="12" class="pt-1 pb-3">
@@ -117,7 +131,14 @@
                       >Number of registered students:</span
                     >
                     <v-spacer></v-spacer>
-                    <span class="font-weight-bold">0</span>
+                    <span v-if="type_form == 'create'" class="font-weight-bold"
+                      >0</span
+                    >
+                    <span
+                      v-else-if="type_form == 'edit'"
+                      class="font-weight-bold"
+                      >{{ form_school.total_users_count }}</span
+                    >
                   </v-col>
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">Yearbook Advisor:</span>
@@ -181,7 +202,13 @@
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
-                  <v-col cols="12" md="12" sm="12" class="py-1">
+                  <v-col
+                    v-if="type_form == 'create'"
+                    cols="12"
+                    md="12"
+                    sm="12"
+                    class="py-1"
+                  >
                     <span class="font-weight-bold">Email:</span>
                     <v-text-field
                       v-model="form_school.admin_email"
@@ -192,7 +219,13 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-col cols="12" md="12" sm="12" class="py-1">
+                  <v-col
+                    v-if="type_form == 'create'"
+                    cols="12"
+                    md="12"
+                    sm="12"
+                    class="py-1"
+                  >
                     <span class="font-weight-bold">Password:</span>
                     <v-text-field
                       v-model="form_school.admin_password"
@@ -227,12 +260,16 @@
                       max-width="200"
                       width="200"
                     >
-                      <p v-if="!button_text_file" class="ma-0 pa-0" >
+                      <p v-if="!button_text_file" class="ma-0 pa-0">
                         PDF <span class="text-lowercase pl-2"> Upload</span>
-                        </p> 
-                        <p v-else class="ma-0 pa-0 text-truncate" style="max-width: 150px;">
-                          {{button_text_file}}
-                        </p>
+                      </p>
+                      <p
+                        v-else
+                        class="ma-0 pa-0 text-truncate"
+                        style="max-width: 150px"
+                      >
+                        {{ button_text_file }}
+                      </p>
                       <v-icon right> mdi-paperclip </v-icon>
                     </v-btn>
                     <input
@@ -243,10 +280,146 @@
                       @change="onFileChanged"
                     />
                   </v-col>
+                  <v-col
+                    v-if="form_school && form_school.contract"
+                    cols="12"
+                    md="12"
+                    sm="12"
+                    class="pt-1 pb-4 d-flex"
+                    style="align-items: center"
+                  >
+                    <span class="font-weight-bold">Contract:</span>
+                    <v-spacer></v-spacer>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-right">
+                          <a
+                            :href="'/' + form_school.contract.path"
+                            target="_blank"
+                            :rel="form_school.contract.original_name"
+                            >{{ form_school.contract.original_name }}</a
+                          >
+                        </v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                          {{ form_school.contract.size_to_human }}
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-icon>
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                              @click="dialog_delete_contract = true"
+                              v-bind="attrs"
+                              v-on="on"
+                              color="primary"
+                              >mdi-trash-can-outline</v-icon
+                            >
+                          </template>
+                          <span>Delete</span>
+                        </v-tooltip>
+                      </v-list-item-icon>
+                    </v-list-item>
+                  </v-col>
                 </v-row>
               </v-card>
             </v-col>
-            <v-col cols="12" md="4"> </v-col>
+            <v-col cols="12" md="4" v-if="type_form == 'edit'">
+              <v-card elevation="0" class="mx-auto mt-5" max-width="370">
+                <v-row wrap>
+                  <v-col cols="12" md="12" sm="12" class="pt-1 pb-3">
+                    <span class="font-weight-bold body-1"
+                      >Social Media settings for Students:</span
+                    >
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="6"
+                    sm="12"
+                    class="py-1"
+                    v-for="(item, index) in items_social_grades"
+                    :key="index"
+                  >
+                    <v-switch
+                      v-model="form_school.grades"
+                      inset
+                      :label="item"
+                      color="primary"
+                      :value="item"
+                      hide-details
+                    ></v-switch>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12" class="pt-9 pb-3">
+                    <span class="font-weight-bold body-1"
+                      >Social Media available for Students:</span
+                    >
+                  </v-col>
+                  <v-col cols="12" md="6" sm="12" class="py-1">
+                    <v-switch
+                      v-model="form_school.is_fb"
+                      inset
+                      color="primary"
+                      :false-value="0"
+                      :true-value="1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <p class="ma-0 pa-0">
+                          <v-icon left>mdi-facebook</v-icon> Facebook
+                        </p>
+                      </template>
+                    </v-switch>
+                  </v-col>
+                  <v-col cols="12" md="6" sm="12" class="py-1">
+                    <v-switch
+                      v-model="form_school.is_twitter"
+                      inset
+                      color="primary"
+                      :false-value="0"
+                      :true-value="1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <p class="ma-0 pa-0">
+                          <v-icon left>mdi-instagram</v-icon> Instagram
+                        </p>
+                      </template>
+                    </v-switch>
+                  </v-col>
+                  <v-col cols="12" md="6" sm="12" class="py-1">
+                    <v-switch
+                      v-model="form_school.is_inst"
+                      inset
+                      color="primary"
+                      :false-value="0"
+                      :true-value="1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <p class="ma-0 pa-0">
+                          <v-icon left>mdi-twitter</v-icon> Twitter
+                        </p>
+                      </template>
+                    </v-switch>
+                  </v-col>
+                  <v-col cols="12" md="6" sm="12" class="py-1">
+                    <v-switch
+                      v-model="form_school.is_linkedin"
+                      inset
+                      color="primary"
+                      :false-value="0"
+                      :true-value="1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <p class="ma-0 pa-0">
+                          <v-icon left>mdi-linkedin</v-icon> LinkedIn
+                        </p>
+                      </template>
+                    </v-switch>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-col>
           </v-row>
         </v-form>
       </v-card-text>
@@ -258,6 +431,7 @@
             <v-card elevation="0" class="mx-auto" max-width="450">
               <v-card-actions class="text-center d-block">
                 <v-btn
+                  v-if="type_form == 'create'"
                   x-large
                   outlined
                   rounded
@@ -267,6 +441,17 @@
                   @click="saveNewSchool"
                   >Create</v-btn
                 >
+                <v-btn
+                  v-else-if="type_form == 'edit'"
+                  x-large
+                  outlined
+                  rounded
+                  width="202"
+                  color="primary"
+                  class="text-capitalize font-weight-bold admin-btn-bg"
+                  @click="updateSchool"
+                  >Save</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-col>
@@ -274,16 +459,89 @@
         </v-row>
       </v-card-actions>
     </v-card>
+    <v-dialog
+      v-model="dialog_delete_contract"
+      scrollable
+      persistent
+      max-width="400px"
+      transition="dialog-transition"
+      content-class="rounded-xl"
+    >
+      <v-card class="rounded-xl" elevation="3">
+        <v-card-title class="d-block text-center py-9 text-h5 font-weight-bold">
+          Delete this file?
+          <v-btn
+            @click="dialog_delete_contract = !dialog_delete_contract"
+            class="admin-btn-close-dialog"
+            small
+            icon
+            fab
+          >
+            <v-icon color="primary" size="30"> mdi-close </v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text class="text-center font-weight-bold grey lighten-4 pt-5">
+          Are you sure you want to delete <br />
+          this file?
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions class="py-5 grey lighten-4">
+          <v-spacer></v-spacer>
+
+          <v-btn
+            x-large
+            outlined
+            rounded
+            width="140"
+            color="primary"
+            class="text-capitalize font-weight-bold mr-3"
+            @click="dialog_delete_contract = false"
+            >No</v-btn
+          >
+          <v-btn
+            x-large
+            outlined
+            rounded
+            width="140"
+            color="primary"
+            class="text-capitalize font-weight-bold admin-btn-bg"
+            @click="removeContractFile(form_school.contract.id)"
+            >Yes</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <dialog-response
+      @close="show_dialog_response = false"
+      v-if="show_dialog_response"
+      :title_text_dialog="response_title_text"
+      :body_text_dialog="response_body_text"
+      :redirect_success="response_redirect_success"
+      :status="response_status"
+    ></dialog-response>
   </v-container>
 </template>
 
 <script>
+import dialogresponse from "../../global/DialogResponseComponent.vue";
 export default {
-  components: {},
+  components: {
+    "dialog-response": dialogresponse,
+  },
   data() {
     return {
+      response_title_text: null,
+      response_body_text: null,
+      response_redirect_success: null,
+      response_status: null,
+      show_dialog_response: false,
+
+      dialog_delete_contract: false,
+      items_social_grades: [],
       selected_file: null,
       is_selecting: false,
+      type_form: "create",
 
       menu_date_start: false,
       form_school: {
@@ -315,12 +573,48 @@ export default {
     button_text_file() {
       return this.selected_file ? this.selected_file.name : null;
     },
+    id_school() {
+      return this.$route.params.id_school ? this.$route.params.id_school : null;
+    },
+  },
+  watch: {
+    id_school: {
+      immediate: true,
+      handler(value) {
+        if (value && value > 0) {
+          this.type_form = "edit";
+          this.infoSchoolSuperAdmin();
+        }
+      },
+    },
   },
   mounted() {
     this.getCreateSchoolManager();
-    console.log("Component mounted.");
   },
   methods: {
+    infoSchoolSuperAdmin() {
+      axios
+        .get("/info_school_manager_super_admin/" + this.id_school)
+        .then((res) => {
+          this.form_school = res.data.school;
+          this.items_social_grades = res.data.socialGrades;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    removeContractFile(id) {
+      axios
+        .get("/remove_contract_file_school/" + id)
+        .then((res) => {
+          this.dialog_delete_contract = false;
+          this.infoSchoolSuperAdmin();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+
     onButtonClick() {
       this.is_selecting = true;
       window.addEventListener(
@@ -358,10 +652,12 @@ export default {
 
         let formData = new FormData();
         field_form.forEach((field) => {
-          formData.append(field, this.form_school[field]);
+          if(this.form_school[field] != null){
+            formData.append(field, this.form_school[field]);
+          }
         });
-        if(this.selected_file){
-           formData.append("file", this.selected_file);
+        if (this.selected_file) {
+          formData.append("file", this.selected_file);
         }
 
         axios
@@ -376,9 +672,88 @@ export default {
               },
             }
           )
-          .then((res) => {})
+          .then((res) => {
+
+            this.response_title_text = "Success!";
+            this.response_body_text = res.data.message;
+            this.response_redirect_success = "/pyb/super-admin/school_manager";
+            this.response_status = "success";
+
+            this.show_dialog_response = true;
+
+          })
           .catch((err) => {
-            console.error(err);
+            this.response_title_text = "Ups!";
+            this.response_body_text = 'School was </br> not created';
+            this.response_redirect_success = "#";
+            this.response_status = "error";
+
+            this.show_dialog_response = true;
+          });
+      }
+    },
+    updateSchool() {
+      if (this.$refs.formschool.validate()) {
+        var field_form = Object.keys(this.form_school);
+        console.log(field_form);
+
+        let formData = new FormData();
+        this.form_school.grades.forEach((field) => {
+          formData.append("social_grade[]", field);
+        });
+        // formData.append('_token', this.$root.csrf_token);
+        // formData.append('_method', 'PATCH')
+        formData.append("name", this.form_school.name);
+        formData.append("address", this.form_school.address);
+        formData.append("city", this.form_school.city);
+        formData.append("state", this.form_school.state);
+        formData.append("zip", this.form_school.zip);
+        formData.append("country", this.form_school.country);
+        formData.append("students_number", this.form_school.students_number);
+        formData.append("advisor", this.form_school.advisor);
+        formData.append("grade", this.form_school.grade);
+        formData.append("contract_years", this.form_school.contract_years);
+        formData.append(
+          "contract_start_date",
+          this.form_school.contract_start_date
+        );
+
+        formData.append("is_fb", this.form_school.is_fb);
+        formData.append("is_twitter", this.form_school.is_twitter);
+        formData.append("is_inst", this.form_school.is_inst);
+        formData.append("is_linkedin", this.form_school.is_linkedin);
+
+        if (this.selected_file) {
+          formData.append("file", this.selected_file);
+        }
+
+        axios
+          .post(
+            "/info_school_manager_update/" + this.id_school,
+            formData,
+            { emulateJSON: true },
+            {
+              headers: {
+                "Content-Type": "application/json;charset=UTF-8",
+                "Access-Control-Allow-Origin": "*",
+              },
+            }
+          )
+          .then((res) => {
+            this.response_title_text = "Success!";
+            this.response_body_text = res.data.message;
+            this.response_redirect_success = "/pyb/super-admin/school_manager";
+            this.response_status = "success";
+
+            this.show_dialog_response = true;
+          })
+          .catch((err) => {
+            this.response_title_text = "Ups!";
+            this.response_body_text = 'Update failed, </br> try again';
+            this.response_redirect_success = "#";
+            this.response_status = "error";
+
+            this.show_dialog_response = true;
           });
       }
     },

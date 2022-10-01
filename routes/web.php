@@ -36,6 +36,9 @@ Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'l
 Route::resource('/info_dashboard', DashboardController::class);
 Route::resource('/info_school_manager', SchoolManagerController::class);
 Route::get('/create_school_manager',[SchoolManagerController::class, 'create']);
+Route::get('/info_school_manager_super_admin/{id}',[SchoolManagerController::class, 'edit']);
+Route::get('/remove_contract_file_school/{id}',[SchoolManagerController::class, 'removeContract']);
+Route::post('/info_school_manager_update/{id}',[SchoolManagerController::class, 'update']);
 
 
 
@@ -58,6 +61,9 @@ Route::group(['prefix' => 'pyb'], function () {
         return view('super-admin.home');
     });
     Route::get('/super-admin/school_manager/create', function () {
+        return view('super-admin.home');
+    });
+    Route::get('/super-admin/school_manager/{id_school}/edit', function () {
         return view('super-admin.home');
     });
 

@@ -62,6 +62,11 @@ const router = new VueRouter({
             name: 'yearbook_super_admin_new_school_component',
             component: yearbook_super_admin_new_school_component
         },
+        {
+            path: '/pyb/super-admin/school_manager/:id_school/edit',
+            name: 'yearbook_super_admin_new_school_component_edit',
+            component: yearbook_super_admin_new_school_component
+        },
         
     ],
     mode: 'history'
@@ -178,6 +183,7 @@ const app = new Vue({
             ],
             // '2018  -  2019', '2019  -  2020', '2020  -  2021', '2021  -  2022', '2022  -  2023'
             mini: true,
+            csrf_token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 
         }
     },

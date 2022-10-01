@@ -22,20 +22,20 @@ class SchoolManagerController extends Controller
 {
     public function index(Request $request)
     {
-        
+
 
         // dd(Auth::guard('admin')->user()->hasRole('super-admin'));
         // $this->authorize('yearbook.publish');
         if ($request->has('filter')) {
             $schools = School::filter($request->all())
-//	            ->toSql();
-//            dd($schools);
+                //	            ->toSql();
+                //            dd($schools);
                 ->get();
         } else {
-            $schools = School::withCount('totalUsers')->orderBy('created_at', 'desc')->paginate(10);
+            $schools = School::withCount('totalUsers')->with('contract')->orderBy('created_at', 'desc')->paginate(10);
         }
 
-         return  [
+        return  [
             'schools' => $schools,
             'request' => $request,
             'grades' => Yearbook::$gradesFilter
@@ -56,9 +56,9 @@ class SchoolManagerController extends Controller
 
 
         return [
-                'states' => $states,
-                'grades' => Yearbook::$gradesFilter
-            ];
+            'states' => $states,
+            'grades' => Yearbook::$gradesFilter
+        ];
 
         // return view('admin.school_manager.createForm', [
         //     'states' => $states,
@@ -70,19 +70,26 @@ class SchoolManagerController extends Controller
     {
         try {
             /** @var School $school */
-            $school = School::findOrFail($id);
+            $school = School::withCount('totalUsers')->with('contract')->findOrFail($id);
             $states = Yearbook::$states;
             $grades = Yearbook::$grades;
 
             $school->grades = $school->socialGrades()->pluck('grade')->toArray();
 
             if (policy(User::class)->get(Auth::user(), $school)) {
-                return view('admin.school_manager.editForm', [
+                return [
                     'school' => $school,
-                    'states' => $states,
-                    'grades' => Yearbook::$gradesFilter,
-                    'socialGrades' => $grades,
-                ]);
+                    // 'states' => $states,
+                    // 'grades' => Yearbook::$gradesFilter,
+                    'socialGrades' => $grades
+                ];
+
+                // return view('admin.school_manager.editForm', [
+                //     'school' => $school,
+                //     'states' => $states,
+                //     'grades' => Yearbook::$gradesFilter,
+                //     'socialGrades' => $grades,
+                // ]);
             } else {
                 return response('Forbidden', 403);
             }
@@ -105,7 +112,7 @@ class SchoolManagerController extends Controller
         $data = $request->all();
         $school = School::createSchoolWithData($data);
         if (!$school) {
-           
+
             return response([
                 "status" => "error-message",
                 "message" => sprintf('School was not created')
@@ -124,7 +131,7 @@ class SchoolManagerController extends Controller
 
         return response([
             "status" => "success-message",
-            "message" => sprintf('School <strong>"%s"</strong> was successfully created', $school->name)
+            "message" => sprintf('School <strong>"%s"</strong> was </br> successfully created', $school->name)
         ], 200);
 
         // return redirect()->action('Admin\SchoolManagerController@index')
@@ -149,10 +156,10 @@ class SchoolManagerController extends Controller
                 'address' => $request->address,
                 'zip' => $request->zip,
                 'advisor' => $request->advisor,
-                'is_fb' => $request->is_fb != null,
-                'is_twitter' => $request->is_twitter != null,
-                'is_inst' => $request->is_inst != null,
-                'is_linkedin' => $request->is_linkedin != null,
+                'is_fb' => $request->is_fb,
+                'is_twitter' => $request->is_twitter,
+                'is_inst' => $request->is_inst,
+                'is_linkedin' => $request->is_linkedin,
             ]);
         } else {
             $school->update([
@@ -167,10 +174,10 @@ class SchoolManagerController extends Controller
                 'advisor' => $request->advisor,
                 'contract_years' => $request->contract_years,
                 'contract_start_date' => $request->contract_start_date,
-                'is_fb' => $request->is_fb != null,
-                'is_twitter' => $request->is_twitter != null,
-                'is_inst' => $request->is_inst != null,
-                'is_linkedin' => $request->is_linkedin != null,
+                'is_fb' => $request->is_fb,
+                'is_twitter' => $request->is_twitter,
+                'is_inst' => $request->is_inst,
+                'is_linkedin' => $request->is_linkedin,
             ]);
         }
 
@@ -186,14 +193,22 @@ class SchoolManagerController extends Controller
 
         if (Auth::guard('admin')->user()->hasRole('admin')) {
             // dd('Admin is');
-            return redirect()->back()
-                ->with(['id' => $id])
-                ->with(['success-message' => 'School was successfully updated']);
-        } else {
-            return redirect()->action('Admin\SchoolManagerController@index')
-                ->with('success-message', sprintf('School <strong>"%s"</strong> was successfully updated', $school->name));
-        }
+            return response([
+                'status' => "success",
+                'message' => 'School was </br> successfully updated'
+            ], 200);
+            // return redirect()->back()
+            //     ->with(['id' => $id])
+            //     ->with(['success-message' => 'School was successfully updated']);
 
+        } else {
+            return response([
+                'status' => "success",
+                'message' => sprintf('School <strong>"%s"</strong> was </br> successfully updated', $school->name)
+            ], 200);
+            // return redirect()->action('Admin\SchoolManagerController@index')
+            //     ->with('success-message', sprintf('School <strong>"%s"</strong> was successfully updated', $school->name));
+        }
     }
 
     public function books($id)
