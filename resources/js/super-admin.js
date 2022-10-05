@@ -32,6 +32,9 @@ Vue.use(VueRouter);
 Vue.component("yearbook-super-admin-dashboard-component", require("./components/yearbook/super-admin/dashboard/DashboardComponent.vue").default);
 Vue.component("yearbook-super-admin-school-manager-component", require("./components/yearbook/super-admin/school-manager/SchoolManagerComponent.vue").default);
 Vue.component("yearbook-super-admin-new-school-component", require("./components/yearbook/super-admin/school-manager/CreateNewsSchoolComponent.vue").default);
+Vue.component("yearbook-super-admin-contact-us-component", require("./components/yearbook/super-admin/contact-us/ContactUsComponent.vue").default);
+Vue.component("yearbook-super-admin-admins-component", require("./components/yearbook/super-admin/admins/AdminsComponent.vue").default);
+Vue.component("yearbook-super-admin-new-admin-component", require("./components/yearbook/super-admin/admins/CreateNewsAdminComponent.vue").default);
 
 let yearbook_super_admin_dashboard_component = {
     template: `<yearbook-super-admin-dashboard-component></yearbook-super-admin-dashboard-component>`
@@ -41,6 +44,15 @@ let yearbook_super_admin_school_manager_component = {
 }
 let yearbook_super_admin_new_school_component = {
     template: `<yearbook-super-admin-new-school-component></yearbook-super-admin-new-school-component>`
+}
+let yearbook_super_admin_contact_us_component = {
+    template: `<yearbook-super-admin-contact-us-component></yearbook-super-admin-contact-us-component>`
+}
+let yearbook_super_admin_admins_component = {
+    template: `<yearbook-super-admin-admins-component></yearbook-super-admin-admins-component>`
+}
+let yearbook_super_admin_new_admin_component = {
+    template: `<yearbook-super-admin-new-admin-component></yearbook-super-admin-new-admin-component>`
 }
 
 
@@ -66,6 +78,26 @@ const router = new VueRouter({
             path: '/pyb/super-admin/school_manager/:id_school/edit',
             name: 'yearbook_super_admin_new_school_component_edit',
             component: yearbook_super_admin_new_school_component
+        },
+        {
+            path: '/pyb/super-admin/contact_us',
+            name: 'yearbook_super_admin_contact_us_component',
+            component: yearbook_super_admin_contact_us_component
+        },
+        {
+            path: '/pyb/super-admin/admins',
+            name: 'yearbook_super_admin_admins_component',
+            component: yearbook_super_admin_admins_component
+        },
+        {
+            path: '/pyb/super-admin/admins/create',
+            name: 'yearbook_super_admin_new_admin_component',
+            component: yearbook_super_admin_new_admin_component
+        },
+        {
+            path: '/pyb/super-admin/admins/:id_admin/edit',
+            name: 'yearbook_super_admin_edit_admin_component',
+            component: yearbook_super_admin_new_admin_component
         },
         
     ],

@@ -11,3 +11,24 @@
     height: auto !important;
 }
 
+
+
+.admin-input .v-input__append-inner {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+
+.admin-input fieldset {
+    border: 2px solid !important;
+    // color: #494949 !important;
+}
+
+
+.table-custom tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.contract_w {
+    width: 150px !important;
+    max-width: 150px !important;
+}

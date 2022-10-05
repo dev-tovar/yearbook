@@ -94,7 +94,7 @@
       </v-card-text>
       <v-card-text class="px-0">
         <v-data-table
-          :headers="headers_feeds"
+          :headers="headers_school"
           :items="items_school"
           :items-per-page="10"
           class="elevation-0 table-custom"
@@ -133,7 +133,7 @@
               >
 
               <v-icon
-                @click="dialog_delete_feed = true"
+                @click="dialog_delete_school = true"
                 size="18"
                 color="primary"
                 small
@@ -149,7 +149,7 @@
       </v-card-text>
     </v-card>
     <v-dialog
-      v-model="dialog_delete_feed"
+      v-model="dialog_delete_school"
       scrollable
       persistent
       max-width="400px"
@@ -158,9 +158,9 @@
     >
       <v-card class="rounded-xl" elevation="3">
         <v-card-title class="d-block text-center py-9 text-h5 font-weight-bold">
-          Delete this post?
+          Delete this school?
           <v-btn
-            @click="dialog_delete_feed = !dialog_delete_feed"
+            @click="dialog_delete_school = !dialog_delete_school"
             class="admin-btn-close-dialog"
             small
             icon
@@ -171,7 +171,7 @@
         </v-card-title>
         <v-card-text class="text-center font-weight-bold grey lighten-4 pt-5">
           Are you sure you want to delete <br />
-          this news feed?
+          this school?
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions class="py-5 grey lighten-4">
@@ -211,12 +211,12 @@ export default {
   },
   data() {
     return {
-      dialog_delete_feed: false,
+      dialog_delete_school: false,
       filter_user: {
         filter_fechas: [],
       },
 
-      headers_feeds: [
+      headers_school: [
         {
           text: "Date",
           align: "start",
@@ -239,6 +239,9 @@ export default {
           align: "center",
           sortable: false,
           value: "contract",
+          width: '150px',
+           class: 'contract_w',
+  cellClass: 'contract_w',
         },
         { text: "", align: "center", sortable: false, value: "actions" },
       ],
@@ -267,5 +270,9 @@ export default {
 <style>
 .table-custom tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
+}
+.contract_w{
+  width: 150px !important;
+  max-width: 150px !important;
 }
 </style>

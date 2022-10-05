@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SchoolManagerController;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,8 @@ Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'l
 
 // Route::resource('/', 'Admin\DashboardController@index');
 Route::resource('/info_dashboard', DashboardController::class);
+
+
 Route::resource('/info_school_manager', SchoolManagerController::class);
 Route::get('/create_school_manager',[SchoolManagerController::class, 'create']);
 Route::get('/info_school_manager_super_admin/{id}',[SchoolManagerController::class, 'edit']);
@@ -41,8 +44,9 @@ Route::get('/remove_contract_file_school/{id}',[SchoolManagerController::class, 
 Route::post('/info_school_manager_update/{id}',[SchoolManagerController::class, 'update']);
 
 
-
-
+Route::resource('/info_admins', AdminsController::class);
+Route::get('/info_admins_super_admin/{id}',[AdminsController::class, 'edit']);
+Route::post('/info_admins_update/{id}',[AdminsController::class, 'update']);
 
 
 
@@ -66,7 +70,18 @@ Route::group(['prefix' => 'pyb'], function () {
     Route::get('/super-admin/school_manager/{id_school}/edit', function () {
         return view('super-admin.home');
     });
-
+    Route::get('/super-admin/contact_us', function () {
+        return view('super-admin.home');
+    });
+    Route::get('/super-admin/admins', function () {
+        return view('super-admin.home');
+    });
+    Route::get('/super-admin/admins/create', function () {
+        return view('super-admin.home');
+    });
+    Route::get('/super-admin/admins/{id_admin}/edit', function () {
+        return view('super-admin.home');
+    });
 
     # DASHBOARD SUPERADMIN
 

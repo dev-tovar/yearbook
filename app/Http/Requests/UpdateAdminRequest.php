@@ -26,7 +26,7 @@ class UpdateAdminRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'email|unique:admins,email,'.$this->user,
+            'email' => 'email|unique:admins,email,'.$this->id,
             'password' => 'nullable|min:6|confirmed'
         ];
     }

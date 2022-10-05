@@ -16,6 +16,8 @@
             <span v-else-if="type_form == 'edit'"> Edit School </span>
             <div class="admin-btn-new-feed">
               <v-btn
+               :loading="loading_request"
+                :disabled="loading_request"
                 v-if="type_form == 'create'"
                 right
                 x-large
@@ -28,6 +30,8 @@
                 >Create</v-btn
               >
               <v-btn
+               :loading="loading_request"
+                :disabled="loading_request"
                 v-else-if="type_form == 'edit'"
                 right
                 x-large
@@ -56,6 +60,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">School Name:</span>
                     <v-text-field
+                      :rules="[rules_form.required]"
                       v-model="form_school.name"
                       height="52"
                       class="rounded-lg admin-input"
@@ -66,6 +71,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">Address:</span>
                     <v-text-field
+                      :rules="[rules_form.required]"
                       v-model="form_school.address"
                       height="52"
                       class="rounded-lg admin-input"
@@ -76,6 +82,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">City:</span>
                     <v-text-field
+                      :rules="[rules_form.required]"
                       v-model="form_school.city"
                       height="52"
                       class="rounded-lg admin-input"
@@ -86,6 +93,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">State:</span>
                     <v-select
+                      :rules="[rules_form.required]"
                       v-model="form_school.state"
                       :items="items_states"
                       height="52"
@@ -97,6 +105,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">Zip Code:</span>
                     <v-text-field
+                      :rules="[rules_form.required]"
                       v-model="form_school.zip"
                       height="52"
                       class="rounded-lg admin-input"
@@ -107,6 +116,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">Country:</span>
                     <v-text-field
+                      :rules="[rules_form.required]"
                       v-model="form_school.country"
                       height="52"
                       class="rounded-lg admin-input"
@@ -119,6 +129,7 @@
                       >Total number of students:</span
                     >
                     <v-text-field
+                      :rules="[rules_form.required, rules_form.numbers]"
                       v-model="form_school.students_number"
                       height="52"
                       class="rounded-lg admin-input"
@@ -143,6 +154,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">Yearbook Advisor:</span>
                     <v-text-field
+                      :rules="[rules_form.required]"
                       v-model="form_school.advisor"
                       height="52"
                       class="rounded-lg admin-input"
@@ -153,6 +165,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">Grade level of school:</span>
                     <v-select
+                      :rules="[rules_form.required]"
                       v-model="form_school.grade"
                       :items="items_grades"
                       height="52"
@@ -164,6 +177,7 @@
                   <v-col cols="12" md="12" sm="12" class="py-1">
                     <span class="font-weight-bold">Number of years:</span>
                     <v-select
+                      :rules="[rules_form.required]"
                       v-model="form_school.contract_years"
                       :items="items_number_years"
                       height="52"
@@ -185,6 +199,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
+                          :rules="[rules_form.required]"
                           v-model="form_school.contract_start_date"
                           height="52"
                           class="rounded-lg admin-input"
@@ -211,6 +226,7 @@
                   >
                     <span class="font-weight-bold">Email:</span>
                     <v-text-field
+                      :rules="[rules_form.required, rules_form.email]"
                       v-model="form_school.admin_email"
                       height="52"
                       class="rounded-lg admin-input"
@@ -228,6 +244,7 @@
                   >
                     <span class="font-weight-bold">Password:</span>
                     <v-text-field
+                      :rules="[rules_form.required]"
                       v-model="form_school.admin_password"
                       height="52"
                       class="rounded-lg admin-input"
@@ -431,6 +448,8 @@
             <v-card elevation="0" class="mx-auto" max-width="450">
               <v-card-actions class="text-center d-block">
                 <v-btn
+                 :loading="loading_request"
+                :disabled="loading_request"
                   v-if="type_form == 'create'"
                   x-large
                   outlined
@@ -442,6 +461,8 @@
                   >Create</v-btn
                 >
                 <v-btn
+                 :loading="loading_request"
+                :disabled="loading_request"
                   v-else-if="type_form == 'edit'"
                   x-large
                   outlined
@@ -520,17 +541,33 @@
       :redirect_success="response_redirect_success"
       :status="response_status"
     ></dialog-response>
+
+    <v-snackbar top right color="red" v-model="snackbar_errors">
+      <ul class="ma-0">
+        <template v-for="(error, key1) in snackbar_errors_items">
+          <li v-for="(item, key2) in error" :key="key1 + key2">
+            {{ item }}
+          </li>
+        </template>
+      </ul>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script>
+import formvalidation from "../../global/RulesValidation";
 import dialogresponse from "../../global/DialogResponseComponent.vue";
 export default {
   components: {
     "dialog-response": dialogresponse,
   },
+  mixins: [formvalidation],
   data() {
     return {
+      loading_request: false,
+      snackbar_errors: false,
+      snackbar_errors_items: [],
+
       response_title_text: null,
       response_body_text: null,
       response_redirect_success: null,
@@ -646,13 +683,16 @@ export default {
         });
     },
     saveNewSchool() {
+      this.snackbar_errors_items = [];
+      this.snackbar_errors = false;
+
       if (this.$refs.formschool.validate()) {
+        this.loading_request = true;
         var field_form = Object.keys(this.form_school);
-        console.log(field_form);
 
         let formData = new FormData();
         field_form.forEach((field) => {
-          if(this.form_school[field] != null){
+          if (this.form_school[field] != null) {
             formData.append(field, this.form_school[field]);
           }
         });
@@ -673,29 +713,38 @@ export default {
             }
           )
           .then((res) => {
-
             this.response_title_text = "Success!";
             this.response_body_text = res.data.message;
             this.response_redirect_success = "/pyb/super-admin/school_manager";
             this.response_status = "success";
 
             this.show_dialog_response = true;
-
+            this.loading_request = false;
           })
           .catch((err) => {
-            this.response_title_text = "Ups!";
-            this.response_body_text = 'School was </br> not created';
-            this.response_redirect_success = "#";
-            this.response_status = "error";
+            if (err.response.status == 422) {
+              if (
+                err.response.data.errors
+              ) {
+                this.snackbar_errors = true;
+                this.snackbar_errors_items = err.response.data.errors;
+              }
+            } else {
+              this.response_title_text = "Ups!";
+              this.response_body_text = "School was </br> not created";
+              this.response_redirect_success = "#";
+              this.response_status = "error";
 
-            this.show_dialog_response = true;
+              this.show_dialog_response = true;
+            }
+            this.loading_request = false;
           });
       }
     },
     updateSchool() {
       if (this.$refs.formschool.validate()) {
+        this.loading_request = true;
         var field_form = Object.keys(this.form_school);
-        console.log(field_form);
 
         let formData = new FormData();
         this.form_school.grades.forEach((field) => {
@@ -746,14 +795,28 @@ export default {
             this.response_status = "success";
 
             this.show_dialog_response = true;
+            this.loading_request = false;
           })
           .catch((err) => {
-            this.response_title_text = "Ups!";
-            this.response_body_text = 'Update failed, </br> try again';
-            this.response_redirect_success = "#";
-            this.response_status = "error";
+            
+            if (err.response.status == 422) {
+              if (
+                err.response.data.errors
+              ) {
+                this.snackbar_errors = true;
+                this.snackbar_errors_items = err.response.data.errors;
+              }
+            } else {
+              this.response_title_text = "Ups!";
+              this.response_body_text = "School was </br> not updated";
+              this.response_redirect_success = "#";
+              this.response_status = "error";
 
-            this.show_dialog_response = true;
+              this.show_dialog_response = true;
+            }
+
+            this.loading_request = false;
+         
           });
       }
     },

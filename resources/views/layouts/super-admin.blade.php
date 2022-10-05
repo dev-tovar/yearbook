@@ -40,15 +40,6 @@
 }
 
 
-.admin-input .v-input__append-inner{
-            margin-top: auto !important;
-            margin-bottom: auto !important;
-        }
-        .admin-input fieldset {
-            border: 2px solid !important;
-            color: #494949 !important;
-}
-
 .admin-btn-new-feed{
     position: absolute !important;
     top: 14px;
