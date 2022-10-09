@@ -11,7 +11,7 @@
       <v-divider class="mt-3"></v-divider>
       <v-card-text>
         <v-card elevation="0" class="mx-auto" width="1400">
-          <v-card-text>
+          <v-card-text v-if="info_dashboard_counts">
             <!-- {{info_dashboard_counts}} -->
             <v-slide-group v-model="model" class="pa-0">
               <v-slide-item>

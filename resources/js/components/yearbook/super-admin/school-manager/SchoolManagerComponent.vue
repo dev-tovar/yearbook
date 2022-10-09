@@ -50,17 +50,23 @@
               </v-col>
               <v-col>
                 <span class="font-weight-bold">Filter by date</span>
-                <v-select
-                  height="52"
-                  class="rounded-lg admin-input"
-                  outlined
-                  dense
-                  hide-details
-                ></v-select>
+                <date-picker-range
+                  @changeDates="changeDatesOk"
+                  :solo_custom="false"
+                  :outlined_custom="true"
+                  :rounded_custom="false"
+                  :class_custom="'rounded-lg admin-input'"
+                  :height_custom="52"
+                ></date-picker-range>
+               
               </v-col>
               <v-col>
                 <span class="font-weight-bold">Status</span>
                 <v-select
+                  v-model="filter_status"
+                  :items="filter_items_status"
+                  item-value="value"
+                  item-text="text"
                   height="52"
                   class="rounded-lg admin-input"
                   outlined
@@ -71,6 +77,10 @@
               <v-col>
                 <span class="font-weight-bold">Number of students</span>
                 <v-select
+                  v-model="filter_number_students"
+                  :items="filter_items_number_students"
+                  item-value="value"
+                  item-text="text"
                   height="52"
                   class="rounded-lg admin-input"
                   outlined
@@ -81,6 +91,10 @@
               <v-col>
                 <span class="font-weight-bold">Grade level</span>
                 <v-select
+                  v-model="filter_grades"
+                  :items="filter_items_grades"
+                  item-value="value"
+                  item-text="text"
                   height="52"
                   class="rounded-lg admin-input"
                   outlined
@@ -126,7 +140,10 @@
 
           <template v-slot:item.actions="{ item }">
             <div class="d-flex">
-              <router-link style="text-decoration: none" :to="'/pyb/super-admin/school_manager/'+item.id+'/edit'">
+              <router-link
+                style="text-decoration: none"
+                :to="'/pyb/super-admin/school_manager/' + item.id + '/edit'"
+              >
                 <v-icon size="18" color="primary" small class="mr-3">
                   mdi-pencil-outline
                 </v-icon></router-link
@@ -203,7 +220,7 @@
 </template>
 
 <script>
-import daterange from "../../custom-inputs/datePickerRange.vue";
+import daterange from "../../custom-inputs/DatePickerRange.vue";
 
 export default {
   components: {
@@ -211,6 +228,74 @@ export default {
   },
   data() {
     return {
+      filter_date: [],
+      filter_status: null,
+      filter_number_students: null,
+      filter_grades: null,
+
+      filter_items_grades: [
+        {
+          value: "PK-5",
+          text: "PK-5",
+        },
+        {
+          value: "PK-8",
+          text: "PK-8",
+        },
+        {
+          value: "PK-12",
+          text: "PK-12",
+        },
+        {
+          value: "6-8",
+          text: "6-8",
+        },
+        {
+          value: "6-12",
+          text: "6-12",
+        },
+        {
+          value: "9-12",
+          text: "9-12",
+        },
+      ],
+      filter_items_number_students: [
+        {
+          value: "1",
+          text: "Biggest to smallest",
+        },
+        {
+          value: "2",
+          text: "Smallest to biggest",
+        },
+      ],
+      filter_items_status: [
+        {
+          value: "expired",
+          text: "Expired",
+        },
+        {
+          value: "1",
+          text: "Less then 1 year",
+        },
+        {
+          value: "2",
+          text: "From 1 to 2 ",
+        },
+        {
+          value: "3",
+          text: "From 2 to 5",
+        },
+        {
+          value: "4",
+          text: "From 5 to 10",
+        },
+        {
+          value: "5",
+          text: "More than 10",
+        },
+      ],
+
       dialog_delete_school: false,
       filter_user: {
         filter_fechas: [],
@@ -239,9 +324,9 @@ export default {
           align: "center",
           sortable: false,
           value: "contract",
-          width: '150px',
-           class: 'contract_w',
-  cellClass: 'contract_w',
+          width: "150px",
+          class: "contract_w",
+          cellClass: "contract_w",
         },
         { text: "", align: "center", sortable: false, value: "actions" },
       ],
@@ -263,6 +348,9 @@ export default {
           console.error(err);
         });
     },
+    changeDatesOk(date) {
+      this.filter_date = date;
+    },
   },
 };
 </script>
@@ -271,7 +359,7 @@ export default {
 .table-custom tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.contract_w{
+.contract_w {
   width: 150px !important;
   max-width: 150px !important;
 }

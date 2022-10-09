@@ -44,7 +44,7 @@
                 <span class="font-weight-bold">Filter by date</span>
                 <date-picker-range
                   placeholdercustom="Dates"
-                  @changeDates="changeDatesReserva"
+                  @changeDates="changeDatesOk"
                   :solo_custom="false"
                   :outlined_custom="true"
                   :rounded_custom="false"
@@ -164,7 +164,7 @@
 </template>
 
 <script>
-import daterange from "../custom-inputs/datePickerRange.vue";
+import daterange from "../custom-inputs/DatePickerRange.vue";
 
 export default {
   components: {
@@ -279,7 +279,7 @@ export default {
     console.log("Component mounted.");
   },
   methods: {
-    changeDatesReserva(date) {
+    changeDatesOk(date) {
       this.filter_user.filter_fechas = date;
     },
   },

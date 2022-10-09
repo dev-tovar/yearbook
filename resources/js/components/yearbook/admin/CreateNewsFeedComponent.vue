@@ -230,7 +230,7 @@
 </template>
 
 <script>
-import daterange from "../custom-inputs/datePickerRange.vue";
+import daterange from "../custom-inputs/DatePickerRange.vue";
 
 export default {
   components: {
