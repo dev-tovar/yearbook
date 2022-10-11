@@ -31,25 +31,21 @@ class AdminLoginController extends Controller
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             $user = Auth::guard('admin')->user();
             if ($user->hasRole('super-admin')) {
-                // return redirect()->action('Admin\DashboardController@index');
-                return  redirect('/super-admin');
+                return redirect()->action('Admin\DashboardController@index');
             } elseif ($user->hasRole('admin')) {
                 $schoolId = $user->user->yearbook()->first()->school_id;
-                // return redirect()->action('Admin\YearBookController@index', ['school_id' => $schoolId]);
-                return  redirect('/admin');
+                return redirect()->action('Admin\YearBookController@index', ['school_id' => $schoolId]);
             } elseif ($user->hasRole('content_manager')) {
-                return  redirect('/content-manager');
-                // return redirect()->action('Admin\ContentManagerController@index',
-                //     [
-                //         'name' => 'cover',
-                //         'id' => $user->getSchool()->id,
-                //         'yearbook_id' => $user->getSchool()->yearbooks()->first()->id
-                //     ]);
+                return redirect()->action('Admin\ContentManagerController@index',
+                    [
+                        'name' => 'cover',
+                        'id' => $user->getSchool()->id,
+                        'yearbook_id' => $user->getSchool()->yearbooks()->first()->id
+                    ]);
 
             } elseif ($user->hasRole('news_feed')) {
-                // return redirect()->action('Admin\NewsFeedController@index',
-                //     ['id' => $user->getSchool()->id]);
-                return  redirect('/news-feed');
+                return redirect()->action('Admin\NewsFeedController@index',
+                    ['id' => $user->getSchool()->id]);
             } else {
                 Auth::guard('admin')->logout();
                 \request()->session()->flush();
