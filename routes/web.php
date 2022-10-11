@@ -17,40 +17,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* Migrating routes */
-Route::post('/update', 'SystemController@updateServer');
-Route::get('/test', function (){
-    dd((new \App\User())->generatePassword());
+Route::get('/', function () {
+    return view('welcome');
+    // return dd(Auth::guard('admin')->user()->email);
+
 });
 
-Route::get('/', function (){
-    return redirect('/admin');
-});
+Auth::routes();
 
-Route::group(['prefix' => 'admin'], function () {
-
-  Auth::routes();
-
-  Route::any('users_statistics', 'Admin\UsersManagerController@getUsersForDashboard');
-  // Group for auth users only
-  Route::group(['middleware' => 'auth:admin'], function () {
-
-    Route::get('/', 'Admin\DashboardController@index');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login']);
 
 
-    Route::get('gallery', 'Admin\GalleryController@index');
-    Route::get('gallery_content', 'Admin\GalleryController@content');
+
+
 
 
 // Route::resource('/', 'Admin\DashboardController@index');
 Route::resource('/info_dashboard', DashboardController::class);
 
-    Route::group(['prefix' => 'content_manager', 'middleware' => 'school_admin'], function () {
-        Route::get('mark-profiles-ready','Admin\PageController@markProfilesReady');
-      Route::post('create', 'Admin\ContentManagerController@create');
-      Route::post('delete', 'Admin\ContentManagerController@delete');
-      Route::get('template', 'Admin\ContentManagerController@template');
-      Route::get('template_list', 'Admin\TemplateController@getList');
 
 Route::resource('/info_school_manager', SchoolManagerController::class);
 Route::get('/create_school_manager',[SchoolManagerController::class, 'create']);
