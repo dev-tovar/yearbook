@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\CMHelper;
+use App\Helpers\Yearbook AS YBHelper;
 use App\Models\BankAccount;
 use App\Models\SocialGrades;
 use Carbon\Carbon;
@@ -19,23 +20,34 @@ class School extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable
-        = [
-            'name',
-            'grade',
-            'students_number',
-            'country',
-            'state',
-            'city',
-            'address',
-            'zip',
-            'advisor',
-            'contract_years',
-            'contract_start_date',
-            'is_fb',
-            'is_twitter',
-            'is_inst',
-            'is_linkedin',
-        ];
+    = [
+        'name',
+        'grade',
+        'students_number',
+        'country',
+        'state',
+        'city',
+        'address',
+        'zip',
+        'advisor',
+        'contract_years',
+        'contract_start_date',
+        'is_fb',
+        'is_twitter',
+        'is_inst',
+        'is_linkedin',
+    ];
+
+    protected $appends = ['date_create', 'contract_status'];
+
+    public function getDateCreateAttribute()
+    {
+        return \Carbon\Carbon::parse($this->created_at)->format('M d, Y');
+    }
+    public function getContractStatusAttribute()
+    {
+        return YBHelper::displayElapsedTime(\Carbon\Carbon::parse($this->contract_start_date)->addYears($this->contract_years));
+    }
 
     public static function boot()
     {
@@ -80,9 +92,14 @@ class School extends Model
 
     public function countUsers()
     {
-        return User::query()->join('users_year_books as uyb','users.id','=','uyb.user_id')
-            ->join('year_books as yb','yb.id','=','uyb.yearbook_id')
-            ->where('yb.school_id',$this->id)->count();
+        return User::query()->join('users_year_books as uyb', 'users.id', '=', 'uyb.user_id')
+            ->join('year_books as yb', 'yb.id', '=', 'uyb.yearbook_id')
+            ->where('yb.school_id', $this->id)->count();
+    }
+
+    public function totalUsers()
+    {
+        return $this->hasManyThrough(UsersYearBook::class, YearBook::class, 'id', 'yearbook_id', 'id', 'id');
     }
 
     public static function createWithYearBook($data)
@@ -132,7 +149,7 @@ class School extends Model
     {
         $fromCarbon = Carbon::parse($from)->format('Y-m-d');
 
-        return $query->where('created_at', '>', $fromCarbon)
+        return $query->whereDate('created_at', '>=', $fromCarbon)
             ->orderBy('created_at', 'desc');
     }
 
@@ -140,7 +157,7 @@ class School extends Model
     {
         $toCarbon = Carbon::parse($to)->format('Y-m-d');
 
-        return $query->where('created_at', '<', $toCarbon)
+        return $query->whereDate('created_at', '<=', $toCarbon)
             ->orderBy('created_at', 'desc');
     }
 
@@ -236,7 +253,7 @@ class School extends Model
         return $query->where('grade', $grade);
     }
 
-    public function scopeFilter($query, Array $filter)
+    public function scopeFilter($query, array $filter)
     {
         if (isset($filter['search']) && $filter['search'] !== null) {
             $query->search($filter['search']);
@@ -247,7 +264,8 @@ class School extends Model
         if (isset($filter['state']) && $filter['state'] !== null) {
             $query->state($filter['state']);
         }
-        if (isset($filter['number_of_students'])
+        if (
+            isset($filter['number_of_students'])
             && $filter['number_of_students'] !== null
         ) {
             $query->order($filter['number_of_students']);
@@ -349,6 +367,6 @@ class School extends Model
 
     public function socialGrades()
     {
-        return $this->hasMany(SocialGrades::class,'school_id');
+        return $this->hasMany(SocialGrades::class, 'school_id');
     }
 }

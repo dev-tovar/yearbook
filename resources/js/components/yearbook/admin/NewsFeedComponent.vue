@@ -6,7 +6,7 @@
           <v-col cols="12" md="12" class="pa-0 ma-0 text-center">
             <span> News Feed </span>
             <v-btn
-              to="/admin/news_feed/create"
+              to="/pyb/admin/news_feed/create"
               right
               x-large
               outlined
@@ -44,7 +44,7 @@
                 <span class="font-weight-bold">Filter by date</span>
                 <date-picker-range
                   placeholdercustom="Dates"
-                  @changeDates="changeDatesReserva"
+                  @changeDates="changeDatesOk"
                   :solo_custom="false"
                   :outlined_custom="true"
                   :rounded_custom="false"
@@ -164,7 +164,7 @@
 </template>
 
 <script>
-import daterange from "../custom-inputs/datePickerRange.vue";
+import daterange from "../custom-inputs/DatePickerRange.vue";
 
 export default {
   components: {
@@ -279,7 +279,7 @@ export default {
     console.log("Component mounted.");
   },
   methods: {
-    changeDatesReserva(date) {
+    changeDatesOk(date) {
       this.filter_user.filter_fechas = date;
     },
   },

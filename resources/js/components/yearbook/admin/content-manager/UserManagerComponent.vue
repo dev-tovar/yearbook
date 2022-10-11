@@ -7,7 +7,7 @@
             <span> User manager </span>
             <div class="admin-btn-new-feed">
               <v-btn
-              to="/admin/user_manager/1/create"
+              to="/pyb/admin/user_manager/1/create"
               right
               x-large
               outlined
@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import daterange from "../../custom-inputs/datePickerRange.vue";
+import daterange from "../../custom-inputs/DatePickerRange.vue";
 
 export default {
   components: {

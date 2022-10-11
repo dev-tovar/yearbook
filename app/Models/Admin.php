@@ -33,6 +33,13 @@ class Admin extends Authenticatable
             'remember_token',
         ];
 
+        protected $appends = ['date_create'];
+
+        public function getDateCreateAttribute()
+        {
+            return \Carbon\Carbon::parse($this->created_at)->format('M d, Y');
+        }
+
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

@@ -60,22 +60,22 @@ let yearbook_admin_new_user_manager_component = {
 const router = new VueRouter({
     routes: [
         {
-            path: '/admin',
+            path: '/pyb/admin',
             name: 'yearbook_admin_home_component',
             component: yearbook_admin_home_component
         },
         {
-            path: '/admin/news_feed',
+            path: '/pyb/admin/news_feed',
             name: 'yearbook_admin_news_feed_component',
             component: yearbook_admin_news_feed_component
         },
         {
-            path: '/admin/news_feed/create',
+            path: '/pyb/admin/news_feed/create',
             name: 'yearbook_admin_create_news_feed_component',
             component: yearbook_admin_create_news_feed_component
         },
         {
-            path: '/admin/user_manager/:id',
+            path: '/pyb/admin/user_manager/:id',
             name: 'yearbook_admin_user_manager_component',
             component: yearbook_admin_user_manager_component,
             // children: [
@@ -86,7 +86,7 @@ const router = new VueRouter({
             // ]
         },
         {
-            path: '/admin/user_manager/:id/create',
+            path: '/pyb/admin/user_manager/:id/create',
             name: 'yearbook_admin_new_user_manager_component',
             component: yearbook_admin_new_user_manager_component,
         }
@@ -120,46 +120,46 @@ const app = new Vue({
             sub_menu_admin: false,
             menu_admin_select: null,
             items: [
-                { value: "news-feed", submenu: false, url: '/admin/news_feed', title: 'News Feed', icon: 'mdi-image-outline' },
-                { value: "user-manager", submenu: true, url: '/admin/user_manager', title: 'User Manager', icon: 'mdi-image-outline' },
-                { value: "content-manager", submenu: true, url: '/admin/content_manager', title: 'Content Manager', icon: 'mdi-image-outline' },
-                { value: "gallery", submenu: false, url: '/admin/4', title: 'Gallery', icon: 'mdi-image-outline' },
-                { value: "alumni", submenu: false, url: '/admin/5', title: 'Alumni', icon: 'mdi-image-outline' },
-                { value: "alumni-events", submenu: false, url: '/admin/6', title: 'Alumni Events', icon: 'mdi-image-outline' },
-                { value: "colors", submenu: false, url: '/admin/7', title: 'Colors', icon: 'mdi-image-outline' },
-                { value: "bank-account", submenu: false, url: '/admin/8', title: 'Bank Account', icon: 'mdi-image-outline' },
-                { value: "contact-us", submenu: false, url: '/admin/9', title: 'Contact us', icon: 'mdi-image-outline' },
+                { value: "news-feed", submenu: false, url: '/pyb/admin/news_feed', title: 'News Feed', icon: 'mdi-image-outline' },
+                { value: "user-manager", submenu: true, url: '/pyb/admin/user_manager', title: 'User Manager', icon: 'mdi-image-outline' },
+                { value: "content-manager", submenu: true, url: '/pyb/admin/content_manager', title: 'Content Manager', icon: 'mdi-image-outline' },
+                { value: "gallery", submenu: false, url: '/pyb/admin/4', title: 'Gallery', icon: 'mdi-image-outline' },
+                { value: "alumni", submenu: false, url: '/pyb/admin/5', title: 'Alumni', icon: 'mdi-image-outline' },
+                { value: "alumni-events", submenu: false, url: '/pyb/admin/6', title: 'Alumni Events', icon: 'mdi-image-outline' },
+                { value: "colors", submenu: false, url: '/pyb/admin/7', title: 'Colors', icon: 'mdi-image-outline' },
+                { value: "bank-account", submenu: false, url: '/pyb/admin/8', title: 'Bank Account', icon: 'mdi-image-outline' },
+                { value: "contact-us", submenu: false, url: '/pyb/admin/9', title: 'Contact us', icon: 'mdi-image-outline' },
             ],
             sub_menu: [
                 {
                     id: 1,
                     text: "2018  -  2019",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/1"
+                    url: "/pyb/admin/user_manager/1"
                 },
                 {
                     id: 2,
                     text: "2019  -  2020",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/2"
+                    url: "/pyb/admin/user_manager/2"
                 },
                 {
                     id: 3,
                     text: "2020  -  2021",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/3"
+                    url: "/pyb/admin/user_manager/3"
                 },
                 {
                     id: 4,
                     text: "2021  -  2022",
                     img: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-                    url: "/admin/user_manager/4"
+                    url: "/pyb/admin/user_manager/4"
                 },
                 {
                     id: 5,
                     text: "2022  -  2023",
                     img: null,
-                    url: "/admin/user_manager/5"
+                    url: "/pyb/admin/user_manager/5"
                 },
 
             ],

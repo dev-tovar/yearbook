@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class FileContracts extends Model
 {
@@ -14,8 +15,8 @@ class FileContracts extends Model
         if ($file->isValid()) {
             $ext = $file->getClientOriginalExtension();
             $fileName = $file->getClientOriginalName();
-            $fileSize = $file->getClientSize();
-            $randomName = str_random(50);
+            $fileSize = $file->getSize();
+            $randomName = Str::random(50);
 
             $path = public_path('uploads/contracts/' . $schoolId);
             $file->move($path, 'contract_' . $randomName . '.' . $ext);

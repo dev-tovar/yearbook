@@ -40,15 +40,6 @@
 }
 
 
-.admin-input .v-input__append-inner{
-            margin-top: auto !important;
-            margin-bottom: auto !important;
-        }
-        .admin-input fieldset {
-            border: 2px solid !important;
-            color: #494949 !important;
-}
-
 .admin-btn-new-feed{
     position: absolute !important;
     top: 14px;
@@ -81,6 +72,16 @@
 .hidde-scroll-bar .v-navigation-drawer__content {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+@font-face{
+  font-family: text-security-disc;
+  src: url("/fonts/text-security-disc.woff");
+}
+
+.login-input.password input{
+  font-family: text-security-disc;
+  -webkit-text-security: disc;
 }
 
     </style>

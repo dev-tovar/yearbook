@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Admin;
-use App\Contract;
+use App\Models\Admin;
+use App\Models\Contract;
 use App\Repositories\UserRepository;
-use App\School;
-use App\User;
+use App\Models\School;
+use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        if (Auth::user()->hasRole('super-admin')) {
+        if (Auth::guard('admin')->user()->hasRole('super-admin')) {
             $data = [
                 'totalSchools' => School::count(),
                 'schoolsWithContract' => School::whereHas('contract')->count(),
@@ -40,25 +40,29 @@ class DashboardController extends Controller
                         $q->where('key', 'super-admin');
                     })->count(),
             ];
-            return view('admin.dashboard', [
-                'data' => $data,
-            ]);
-        } elseif (Auth::user()->hasRole('admin')) {
+
+            return  $data;
+
+            // return view('admin.dashboard', [
+            //     'data' => $data,
+            // ]);
+
+        } elseif (Auth::guard('admin')->user()->hasRole('admin')) {
             /** @var School $school */
-            $school = Auth::user()->getSchool();
+            $school = Auth::guard('admin')->user()->getSchool();
 
             return redirect()->action('Admin\YearBookController@index', ['school_id' => $school]);
-        } elseif (Auth::user()->hasRole('content_manager')) {
+        } elseif (Auth::guard('admin')->user()->hasRole('content_manager')) {
             return redirect()->action('Admin\ContentManagerController@index',
                 [
                     'name' => 'cover',
-                    'id' => Auth::user()->getSchool()->id,
-                    'yearbook_id' => Auth::user()->getSchool()->yearbooks()->first()->id
+                    'id' => Auth::guard('admin')->user()->getSchool()->id,
+                    'yearbook_id' => Auth::guard('admin')->user()->getSchool()->yearbooks()->first()->id
                 ]);
 
-        } elseif (Auth::user()->hasRole('news_feed')) {
+        } elseif (Auth::guard('admin')->user()->hasRole('news_feed')) {
             return redirect()->action('Admin\NewsFeedController@index',
-                ['id' => Auth::user()->getSchool()->id]);
+                ['id' => Auth::guard('admin')->user()->getSchool()->id]);
         }
 
         Auth::guard('admin')->logout();

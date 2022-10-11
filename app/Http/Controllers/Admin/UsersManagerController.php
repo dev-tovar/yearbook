@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Admin;
+use App\Models\Admin;
 use App\Enums\UserAppStatus;
 use App\Events\PushEvent;
 use App\Exports\UsersExport;
@@ -10,20 +10,20 @@ use App\Http\Requests\StudentRequest;
 use App\Http\Requests\UserImportFileRequest;
 use App\Http\Requests\UsersPushRequest;
 use App\Repositories\YearBookRepository;
-use App\School;
+use App\Models\School;
 use App\Services\Admin\UserService;
 use App\Services\User\CSVImporter;
 use App\Services\User\XMLmporter;
-use App\User;
-use App\UsersYearBook;
-use App\YearBook;
+use App\Models\User;
+use App\Models\UsersYearBook;
+use App\Models\YearBook;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSaveUser;
-use App\Role;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;

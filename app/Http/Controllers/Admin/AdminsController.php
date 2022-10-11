@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Admin;
+use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
-use App\Role;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +17,12 @@ class AdminsController extends Controller {
 			$q->where('key', 'super-admin');
 		})->paginate(20);
 
-		return view('admin.admins.index', [
+		// return view('admin.admins.index', [
+		// 	'admins' => $admins
+		// ]);
+		return  [
 			'admins' => $admins
-		]);
+		];
 	}
 
 	public function create() {
@@ -29,9 +32,12 @@ class AdminsController extends Controller {
 	public function edit($id) {
 		$user = Admin::find($id);
 
-		return view('admin.admins.edit', [
+		// return view('admin.admins.edit', [
+		// 	'user' => $user
+		// ]);
+		return [
 			'user' => $user
-		]);
+		];
 	}
 
 	public function store(StoreAdminRequest $request) {
@@ -44,7 +50,12 @@ class AdminsController extends Controller {
 		$data = $request->all();
 		Admin::create($data)->roles()->attach($role->id);
 
-		return redirect()->action('Admin\AdminsController@index')->with('success-message', 'Super admin successfully created');
+		return response([
+            "status" => "success-message",
+            "message" => 'Super admin successfully created'
+        ], 200);
+
+		// return redirect()->action('Admin\AdminsController@index')->with('success-message', 'Super admin successfully created');
 	}
 
 	public function update(UpdateAdminRequest $request, $id) {
@@ -52,6 +63,12 @@ class AdminsController extends Controller {
 		$data = array_filter($request->all());
 
 		$user->update($data);
-		return redirect()->action('Admin\AdminsController@index')->with('success-message', 'Super Admin successfully updated');
+
+		return response([
+			'status' => "success-message",
+			'message' => 'Super Admin successfully updated'
+		], 200);
+
+		// return redirect()->action('Admin\AdminsController@index')->with('success-message', 'Super Admin successfully updated');
 	}
 }
