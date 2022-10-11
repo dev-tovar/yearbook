@@ -35,6 +35,9 @@ Vue.component("yearbook-super-admin-new-school-component", require("./components
 Vue.component("yearbook-super-admin-contact-us-component", require("./components/yearbook/super-admin/contact-us/ContactUsComponent.vue").default);
 Vue.component("yearbook-super-admin-admins-component", require("./components/yearbook/super-admin/admins/AdminsComponent.vue").default);
 Vue.component("yearbook-super-admin-new-admin-component", require("./components/yearbook/super-admin/admins/CreateNewsAdminComponent.vue").default);
+Vue.component("yearbook-super-admin-college-attending-component", require("./components/yearbook/super-admin/college-attending/CollegeAttendingComponent.vue").default);
+Vue.component("yearbook-super-admin-future-aspirations-component", require("./components/yearbook/super-admin/future-aspirations/FutureAspirationsComponent.vue").default);
+Vue.component("yearbook-super-admin-sports-clubs-component", require("./components/yearbook/super-admin/sports-clubs/SportsClubsComponent.vue").default);
 
 let yearbook_super_admin_dashboard_component = {
     template: `<yearbook-super-admin-dashboard-component></yearbook-super-admin-dashboard-component>`
@@ -53,6 +56,15 @@ let yearbook_super_admin_admins_component = {
 }
 let yearbook_super_admin_new_admin_component = {
     template: `<yearbook-super-admin-new-admin-component></yearbook-super-admin-new-admin-component>`
+}
+let yearbook_super_admin_college_attending_component = {
+    template: `<yearbook-super-admin-college-attending-component></yearbook-super-admin-college-attending-component>`
+}
+let yearbook_super_admin_future_aspirations_component = {
+    template: `<yearbook-super-admin-future-aspirations-component></yearbook-super-admin-future-aspirations-component>`
+}
+let yearbook_super_admin_sports_clubs_component = {
+    template: `<yearbook-super-admin-sports-clubs-component></yearbook-super-admin-sports-clubs-component>`
 }
 
 
@@ -98,6 +110,21 @@ const router = new VueRouter({
             path: '/pyb/super-admin/admins/:id_admin/edit',
             name: 'yearbook_super_admin_edit_admin_component',
             component: yearbook_super_admin_new_admin_component
+        },
+        {
+            path: '/pyb/super-admin/college_attending',
+            name: 'yearbook_super_admin_college_attending_component',
+            component: yearbook_super_admin_college_attending_component
+        },
+        {
+            path: '/pyb/super-admin/future_aspirations',
+            name: 'yearbook_super_admin_future_aspirations_component',
+            component: yearbook_super_admin_future_aspirations_component
+        },
+        {
+            path: '/pyb/super-admin/sports_clubs',
+            name: 'yearbook_super_admin_sports_clubs_component',
+            component: yearbook_super_admin_sports_clubs_component
         },
         
     ],

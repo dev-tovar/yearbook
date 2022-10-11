@@ -82,6 +82,15 @@ Route::group(['prefix' => 'pyb'], function () {
     Route::get('/super-admin/admins/{id_admin}/edit', function () {
         return view('super-admin.home');
     });
+    Route::get('/super-admin/college_attending', function () {
+        return view('super-admin.home');
+    });
+    Route::get('/super-admin/future_aspirations', function () {
+        return view('super-admin.home');
+    });
+    Route::get('/super-admin/sports_clubs', function () {
+        return view('super-admin.home');
+    });
 
     # DASHBOARD SUPERADMIN
 

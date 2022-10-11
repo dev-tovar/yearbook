@@ -27,12 +27,13 @@ class SchoolManagerController extends Controller
         // dd(Auth::guard('admin')->user()->hasRole('super-admin'));
         // $this->authorize('yearbook.publish');
         if ($request->has('filter')) {
-            $schools = School::filter($request->all())
+            $schools = School::withCount('totalUsers')->with('contract')->orderBy('created_at', 'desc')->filter($request->all())
                 //	            ->toSql();
                 //            dd($schools);
-                ->get();
+                // ->get()
+                ->paginate($request->per_page);
         } else {
-            $schools = School::withCount('totalUsers')->with('contract')->orderBy('created_at', 'desc')->paginate(10);
+            $schools = School::withCount('totalUsers')->with('contract')->orderBy('created_at', 'desc')->paginate($request->per_page);
         }
 
         return  [

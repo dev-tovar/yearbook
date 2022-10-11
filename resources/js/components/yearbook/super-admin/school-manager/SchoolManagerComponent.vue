@@ -6,27 +6,10 @@
           <v-col cols="12" md="12" class="pa-0 ma-0 text-center">
             <span> School Manager </span>
             <div class="admin-btn-new-feed">
-              <v-btn
-                to="/pyb/super-admin/school_manager/create"
-                right
-                x-large
-                outlined
-                rounded
-                width="182"
-                color="primary"
-                class="text-capitalize font-weight-bold"
-                >Add New School</v-btn
-              >
-              <v-btn
-                right
-                x-large
-                outlined
-                rounded
-                width="202"
-                color="primary"
-                class="text-capitalize font-weight-bold admin-btn-bg"
-                >Import Schools</v-btn
-              >
+              <v-btn to="/pyb/super-admin/school_manager/create" right x-large outlined rounded width="182"
+                color="primary" class="text-capitalize font-weight-bold">Add New School</v-btn>
+              <v-btn right x-large outlined rounded width="202" color="primary"
+                class="text-capitalize font-weight-bold admin-btn-bg">Import Schools</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -38,123 +21,75 @@
             <v-row wrap>
               <v-col>
                 <span class="font-weight-bold">Search</span>
-                <v-text-field
-                  placeholder="Search"
-                  height="52"
-                  class="rounded-lg admin-input"
-                  outlined
-                  dense
-                  append-icon="mdi-magnify"
-                  hide-details
-                ></v-text-field>
+                <v-text-field clearable placeholder="Search" height="52" class="rounded-lg admin-input" outlined dense
+                  append-icon="mdi-magnify" hide-details v-model="filter_search"></v-text-field>
               </v-col>
               <v-col>
                 <span class="font-weight-bold">Filter by date</span>
-                <date-picker-range
-                  @changeDates="changeDatesOk"
-                  :solo_custom="false"
-                  :outlined_custom="true"
-                  :rounded_custom="false"
-                  :class_custom="'rounded-lg admin-input'"
-                  :height_custom="52"
-                ></date-picker-range>
-               
+                <date-picker-range @changeDates="changeDatesOk" :solo_custom="false" :outlined_custom="true"
+                  :rounded_custom="false" :class_custom="'rounded-lg admin-input'" :height_custom="52">
+                </date-picker-range>
+
               </v-col>
               <v-col>
                 <span class="font-weight-bold">Status</span>
-                <v-select
-                  v-model="filter_status"
-                  :items="filter_items_status"
-                  item-value="value"
-                  item-text="text"
-                  height="52"
-                  class="rounded-lg admin-input"
-                  outlined
-                  dense
-                  hide-details
-                ></v-select>
+                <v-select clearable v-model="filter_status" :items="filter_items_status" item-value="value"
+                  item-text="text" height="52" class="rounded-lg admin-input" outlined dense hide-details></v-select>
               </v-col>
               <v-col>
                 <span class="font-weight-bold">Number of students</span>
-                <v-select
-                  v-model="filter_number_students"
-                  :items="filter_items_number_students"
-                  item-value="value"
-                  item-text="text"
-                  height="52"
-                  class="rounded-lg admin-input"
-                  outlined
-                  dense
-                  hide-details
-                ></v-select>
+                <v-select clearable v-model="filter_number_students" :items="filter_items_number_students"
+                  item-value="value" item-text="text" height="52" class="rounded-lg admin-input" outlined dense
+                  hide-details></v-select>
               </v-col>
               <v-col>
                 <span class="font-weight-bold">Grade level</span>
-                <v-select
-                  v-model="filter_grades"
-                  :items="filter_items_grades"
-                  item-value="value"
-                  item-text="text"
-                  height="52"
-                  class="rounded-lg admin-input"
-                  outlined
-                  dense
-                  hide-details
-                ></v-select>
+                <v-select clearable v-model="filter_grades" :items="filter_items_grades" item-value="value"
+                  item-text="text" height="52" class="rounded-lg admin-input" outlined dense hide-details></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col offset-md="8">
+                <v-card-actions class="text-right d-block">
+                  <v-btn v-if="filter_apply" rounded text class="text-capitalize px-5" @click="cancelSchoolFilter">
+                    Clear Filter<v-icon right>mdi-filter-remove-outline</v-icon>
+                  </v-btn>
+                  <v-btn rounded depressed color="primary" class="text-capitalize px-5" @click="applySchoolFilter">
+                    Apply Filter <v-icon right>{{ !filter_apply ? 'mdi-filter' : 'mdi-filter-menu'}}</v-icon>
+                  </v-btn>
+                </v-card-actions>
               </v-col>
             </v-row>
           </v-card-text>
         </v-card>
       </v-card-text>
       <v-card-text class="px-0">
-        <v-data-table
-          :headers="headers_school"
-          :items="items_school"
-          :items-per-page="10"
-          class="elevation-0 table-custom"
-        >
-          <template v-slot:item.photo="{ item }">
-            <v-avatar size="30" tile>
-              <v-img src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
-            </v-avatar>
-          </template>
+        <v-data-table 
+        :server-items-length="items_school_total" 
+        :headers="headers_school" 
+        :items="items_school" 
+        :items-per-page="10"
+        :options.sync="options_table_school"
+          class="elevation-0 table-custom">
+
 
           <template v-slot:item.contract="{ item }">
-            <v-icon
-              v-if="!item.contract"
-              size="18"
-              color="primary"
-              small
-              class="mr-3"
-            >
+            <v-icon v-if="!item.contract" size="18" color="primary" small class="mr-3">
               mdi-file-pdf-box
             </v-icon>
-            <a
-              v-else
-              :href="'/' + item.contract.path"
-              target="_blank"
-              :rel="item.contract.original_name"
-              >{{ item.contract.original_name }}</a
-            >
+            <a v-else :href="'/' + item.contract.path" target="_blank" :rel="item.contract.original_name">{{
+            item.contract.original_name }}</a>
           </template>
 
           <template v-slot:item.actions="{ item }">
             <div class="d-flex">
-              <router-link
-                style="text-decoration: none"
-                :to="'/pyb/super-admin/school_manager/' + item.id + '/edit'"
-              >
+              <router-link style="text-decoration: none" :to="'/pyb/super-admin/school_manager/' + item.id + '/edit'">
                 <v-icon size="18" color="primary" small class="mr-3">
                   mdi-pencil-outline
-                </v-icon></router-link
-              >
+                </v-icon>
+              </router-link>
 
-              <v-icon
-                @click="dialog_delete_school = true"
-                size="18"
-                color="primary"
-                small
-              >
+              <v-icon @click="dialog_delete_school = true" size="18" color="primary" small>
                 mdi-trash-can-outline
               </v-icon>
             </div>
@@ -165,24 +100,12 @@
         </v-data-table>
       </v-card-text>
     </v-card>
-    <v-dialog
-      v-model="dialog_delete_school"
-      scrollable
-      persistent
-      max-width="400px"
-      transition="dialog-transition"
-      content-class="rounded-xl"
-    >
+    <v-dialog v-model="dialog_delete_school" scrollable persistent max-width="400px" transition="dialog-transition"
+      content-class="rounded-xl">
       <v-card class="rounded-xl" elevation="3">
         <v-card-title class="d-block text-center py-9 text-h5 font-weight-bold">
           Delete this school?
-          <v-btn
-            @click="dialog_delete_school = !dialog_delete_school"
-            class="admin-btn-close-dialog"
-            small
-            icon
-            fab
-          >
+          <v-btn @click="dialog_delete_school = !dialog_delete_school" class="admin-btn-close-dialog" small icon fab>
             <v-icon color="primary" size="30"> mdi-close </v-icon>
           </v-btn>
         </v-card-title>
@@ -194,24 +117,10 @@
         <v-card-actions class="py-5 grey lighten-4">
           <v-spacer></v-spacer>
 
-          <v-btn
-            x-large
-            outlined
-            rounded
-            width="140"
-            color="primary"
-            class="text-capitalize font-weight-bold mr-3"
-            >No</v-btn
-          >
-          <v-btn
-            x-large
-            outlined
-            rounded
-            width="140"
-            color="primary"
-            class="text-capitalize font-weight-bold admin-btn-bg"
-            >Yes</v-btn
-          >
+          <v-btn x-large outlined rounded width="140" color="primary" class="text-capitalize font-weight-bold mr-3">No
+          </v-btn>
+          <v-btn x-large outlined rounded width="140" color="primary"
+            class="text-capitalize font-weight-bold admin-btn-bg">Yes</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -228,10 +137,14 @@ export default {
   },
   data() {
     return {
+      filter_search: null,
       filter_date: [],
       filter_status: null,
       filter_number_students: null,
       filter_grades: null,
+
+      filter_apply: false,
+      filter_current: {},
 
       filter_items_grades: [
         {
@@ -330,19 +243,73 @@ export default {
         },
         { text: "", align: "center", sortable: false, value: "actions" },
       ],
+      items_school_total: 0,
+      options_table_school: {},
       items_school: [],
     };
   },
+  watch: {
+    options_table_school: {
+        handler () {
+          this.getSchoolManagerInfo(this.filter_current)
+        },
+        deep: true,
+      },
+  },
   mounted() {
     console.log("Component mounted.");
-    this.getSchoolManagerInfo();
+    // this.getSchoolManagerInfo();
   },
   methods: {
-    getSchoolManagerInfo() {
+    applySchoolFilter() {
+
+      let filterFormData = new Object();
+
+      if (this.filter_search) {
+        filterFormData.search = this.filter_search;
+      }
+      if (this.filter_date.length == 2) {
+        filterFormData.from = this.filter_date[0];
+        filterFormData.to = this.filter_date[1];
+      }
+      if (this.filter_status) {
+        filterFormData.status = this.filter_status;
+      }
+      if (this.filter_number_students) {
+        filterFormData.number_of_students = this.filter_number_students;
+      }
+      if (this.filter_grades) {
+        filterFormData.grade = this.filter_grades;
+      }
+      filterFormData.filter = 1;
+      this.filter_apply = true;
+
+      this.filter_current = filterFormData;
+
+      this.getSchoolManagerInfo(filterFormData);
+    },
+    cancelSchoolFilter() {
+      this.filter_apply = false;
+      this.filter_search = null;
+      this.filter_date = [];
+      this.filter_status = null;
+      this.filter_number_students = null;
+      this.filter_grades = null;
+      this.filter_current = {};
+      this.getSchoolManagerInfo(null);
+    },
+    getSchoolManagerInfo(filter = {}) {
+
+      if(filter){
+        filter.page =  this.options_table_school.page ? this.options_table_school.page : 1;
+        filter.per_page =  this.options_table_school.itemsPerPage ? this.options_table_school.itemsPerPage : 10;
+
+      }
       axios
-        .get("/info_school_manager")
+        .get("/info_school_manager", { params: filter })
         .then((res) => {
           this.items_school = res.data.schools.data;
+          this.items_school_total = res.data.schools.total;
         })
         .catch((err) => {
           console.error(err);
@@ -359,6 +326,7 @@ export default {
 .table-custom tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
 }
+
 .contract_w {
   width: 150px !important;
   max-width: 150px !important;

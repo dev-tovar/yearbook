@@ -149,7 +149,7 @@ class School extends Model
     {
         $fromCarbon = Carbon::parse($from)->format('Y-m-d');
 
-        return $query->where('created_at', '>', $fromCarbon)
+        return $query->whereDate('created_at', '>=', $fromCarbon)
             ->orderBy('created_at', 'desc');
     }
 
@@ -157,7 +157,7 @@ class School extends Model
     {
         $toCarbon = Carbon::parse($to)->format('Y-m-d');
 
-        return $query->where('created_at', '<', $toCarbon)
+        return $query->whereDate('created_at', '<=', $toCarbon)
             ->orderBy('created_at', 'desc');
     }
 
